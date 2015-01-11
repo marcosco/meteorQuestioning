@@ -1,0 +1,17 @@
+<template name="navBrand">
+  <a class="navbar-brand" href="{{pathFor 'questionsList'}}">Questioning</a>
+</template>
+
+<template name="navItems">
+  <li class="{{ activeIfTemplateIs 'questionsList' }}">
+    <a href="{{pathFor 'questionsList'}}">Home</a>
+  </li>
+  <li class="{{ activeIfTemplateIs 'about' }}">
+    <a href="{{pathFor 'about'}}">About</a>
+  </li>
+  {{#if currentUser}}
+  <li>
+    <a data-toggle="modal" href="#questionModal" id="submitQuestion">Submit a question</a>
+  </li>
+  {{/if}}
+</template>

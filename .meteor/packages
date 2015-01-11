@@ -8,6 +8,6 @@ meteor-platform
 insecure
 bootstrap-3
 accounts-password
-accounts-ui
 iron:router
 spin
+accounts-ui-bootstrap-3
