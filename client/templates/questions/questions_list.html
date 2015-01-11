@@ -1,0 +1,8 @@
+<template name="questionsList">
+  <h1>Submitted questions</h1>
+  <div class="questions">
+    {{#each questions}}
+      {{> questionItem}}
+    {{/each}}
+  </div>
+</template>
