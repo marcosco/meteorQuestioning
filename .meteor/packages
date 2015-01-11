@@ -10,3 +10,4 @@ insecure
 bootstrap-3
 accounts-password
 accounts-ui
+iron:router
