@@ -1,8 +1,8 @@
 Template.questionForm.events({
-  "submit": function (event) {
+  "submit": function (e) {
     var question = {
-      title: event.target.questionTitle.value,
-      text: event.target.questionText.value
+      title: $(e.target).find('[name=questionTitle]').val(),
+      text: $(e.target).find('[name=questionText]').val()
     }
     Meteor.call("addQuestion", question);
 
