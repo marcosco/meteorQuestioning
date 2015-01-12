@@ -5,6 +5,6 @@
       <p>{{text}}</p>
       <p>Authored by: {{username}} at {{createdAt}}</p>
     </div>
-    <button type="button" class="btn btn-danger" id="delete">Delete</button>
+    {{#if ownPost}}<a href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
   </div>
 </template>

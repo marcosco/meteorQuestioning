@@ -1,7 +1,5 @@
-Template.questionPage.events({
-  "click #delete": function (event) {
-    Meteor.call("removeQuestion", this._id);
-
-    Router.go('/');
+Template.questionPage.helpers({
+  ownPost: function() {
+    return this.owner == Meteor.userId() || Meteor.user().role == 'administrator';
   }
-});
+})
