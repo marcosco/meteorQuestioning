@@ -16,6 +16,11 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             {{> loginButtons }} <!-- here -->
+            {{#if currentUser}}
+              <li class="{{ activeIfTemplateIs 'userProfile' }}">
+                <a href="{{pathFor 'userProfile'}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
+              </li>
+            {{/if}}
         </ul>
       </div><!--/.nav-collapse -->
     </div>

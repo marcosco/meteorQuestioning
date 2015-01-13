@@ -14,4 +14,9 @@
     <a data-toggle="modal" href="#questionModal" id="submitQuestion">Submit a question</a>
   </li>
   {{/if}}
+  {{#if isInRole 'administrator'}}
+  <li class="{{ activeIfTemplateIs 'manageUsers' }}">
+    <a href="{{pathFor 'manageUsers'}}">Manage Users</a>
+  </li>
+  {{/if}}
 </template>

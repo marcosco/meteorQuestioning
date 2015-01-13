@@ -7,7 +7,13 @@ Meteor.publish('questions', function() {
       return Questions.find();
     }
 
-  
   return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] });
 });
 
+Meteor.publish('users', function() {
+  if (Roles.userIsInRole(this.userId, 'administrator')) {
+      return Meteor.users.find();
+    }
+
+  return Meteor.users.find({_id: this.userId});
+});
