@@ -19,7 +19,7 @@ Template.questionEdit.events({
 
   },
 
-  'click .delete': function(e) {
+  'click .remove': function(e) {
     e.preventDefault();
 
     if (confirm("Delete this post?")) {
