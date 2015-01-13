@@ -7,6 +7,7 @@ Meteor.publish('questions', function() {
       return Questions.find();
     }
 
-  return Questions.find( { publishedAt: {$ne: null} });
+  
+  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] });
 });
 
