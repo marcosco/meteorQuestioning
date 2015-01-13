@@ -17,5 +17,18 @@ Template.questionPage.helpers({
     } else {
       return "#777";
     }    
+  },
+
+  createdAt: function() {
+    date = new Date(this.createdAt);
+    return date.toString();
   }
-})
+});
+
+Template.questionPage.events({
+  'click .badge': function(e) {
+    e.preventDefault();
+
+    Meteor.call("togglePublish", this._id);
+  }
+});

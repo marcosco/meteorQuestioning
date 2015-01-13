@@ -23,7 +23,6 @@ Template.questionEdit.events({
     e.preventDefault();
 
     if (confirm("Delete this post?")) {
-      var currentPostId = this._id;
       Meteor.call("removeQuestion", this._id);
       Router.go('questionsList');
     }
