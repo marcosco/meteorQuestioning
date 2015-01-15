@@ -28,3 +28,8 @@ Template.questionEdit.events({
     }
   }
 });
+
+Template.questionEdit.rendered = function() {
+  //CKEDITOR.replace( 'questionText' );
+  $('#questionText').ckeditor();
+};
