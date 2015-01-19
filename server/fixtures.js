@@ -1,7 +1,9 @@
 if ( Meteor.users.find().count() === 0 ) {
   adminId = Accounts.createUser({
     username: 'admin',
-    email: 'admin@email.local',
+    emails: {
+      address: 'admin@email.local',
+    },
     password: 'password',
     profile: {
       first_name: 'Admin',
