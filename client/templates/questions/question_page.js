@@ -1,34 +1,31 @@
-Template.questionPage.helpers({
-  ownPost: function() {
-    return this.owner == Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'administrator');
-  },
-
-  isPublished: function() {
-    if(this.publishedAt != null) {
-      return "Published";
-    } else {
-      return "Unpublished";
-    }
-  },
-
-  badgeColor: function() {
-    if(this.publishedAt != null) {
-      return "#17a103";
-    } else {
-      return "#777";
-    }    
-  },
-
-  createdAt: function() {
-    date = new Date(this.createdAt);
-    return date.toString();
-  }
-});
-
 Template.questionPage.events({
   'click .badge': function(e) {
     e.preventDefault();
 
     Meteor.call("togglePublish", this._id);
+  }
+});
+
+Template.questionPage.helpers({
+  replies: function() {
+    console.log(this._id);
+    replies = Questions.find({reply: this._id}, {sort: {createdAt: -1}});
+    return replies;
+  },
+
+  isPublisher: function () {
+    if (Roles.userIsInRole(Meteor.user(), ['publisher'])) {
+      return true;      
+    } else {
+      return false;
+    }
+  }
+});
+
+Template.replyPage.helpers({
+  replies: function() {
+    console.log(this._id);
+    replies = Questions.find({reply: this._id}, {sort: {createdAt: -1}});
+    return replies;
   }
 });

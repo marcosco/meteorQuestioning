@@ -1,12 +1,22 @@
 <template name="questionPage">
-  <div class="question">
-    <div class="question-content">
-      <h3>{{title}}</h3>
-      <p>{{{text}}}</p>
-      <p><i>Authored by: {{username}} at {{createdAt}}</i></p>
-      <p><span class="badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
-    </div>
-    {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
-        <a href="{{pathFor 'questionPage'}}" class="discuss btn">Discuss</a>
+  {{> questionItem}}
+  {{#if isPublisher}}
+  <div>
+    {{> questionReply}}
+  </div>
+  {{/if}}
+  <div class="replies">
+    {{#each replies}}
+      {{> replyPage}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="replyPage">
+  {{> questionItem}}
+  <div class="replies">
+    {{#each replies}}
+      {{> replyPage}}
+    {{/each}}
   </div>
 </template>

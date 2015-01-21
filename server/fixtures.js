@@ -18,6 +18,7 @@ if ( Questions.find().count() === 0 ) {
 	adminUser = Meteor.users.findOne({"username": "admin"});
 
   var publishedQuestion =  {
+    reply: null,
   	title: "First Question",
   	text: "This is a published question",
     createdAt: new Date().getTime(),
@@ -27,9 +28,23 @@ if ( Questions.find().count() === 0 ) {
     publishedBy: adminUser.username
   };
 
-  Questions.insert(publishedQuestion);
+  q1 = Questions.insert(publishedQuestion);
+
+  var aReplyToQuestion =  {
+    reply: q1,
+    title: "Re: First Question",
+    text: "This is a reply to question one",
+    createdAt: new Date().getTime(),
+    owner: adminUser._id,
+    username: adminUser.username,
+    publishedAt: new Date().getTime(),
+    publishedBy: adminUser.username
+  };
+
+  Questions.insert(aReplyToQuestion);
 
   var unpublishedQuestion =  {
+    reply: null,
   	title: "Second Question",
   	text: "This is an unpublished question",
     createdAt: new Date().getTime(),

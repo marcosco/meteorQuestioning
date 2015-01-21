@@ -1,0 +1,17 @@
+<template name="questionReply">
+  <form class="main">
+    <input type="hidden" name="replyId" id="replyId" value="{{this._id}}">
+    <input type="hidden" name="replyTitle" id="replyTitle" value="{{this.title}}">
+    <div class="control-group">
+        <div class="controls">
+            <textarea class="form-control" rows="3" name="replyText" id="replyText"></textarea>
+        </div>
+    </div>
+    <hr/>
+    <div class="control-group">
+        <div class="controls">
+            <input type="submit" value="Reply" class="btn btn-primary submit"/>
+        </div>
+    </div>
+  </form>
+</template>

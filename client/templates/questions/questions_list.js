@@ -1,5 +1,5 @@
 Template.questionsList.helpers({
   questions: function() {
-    return Questions.find({}, {sort: {createdAt: -1}});
+    return Questions.find({reply: null}, {sort: {createdAt: -1}});
   }
 });
