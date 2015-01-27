@@ -8,10 +8,11 @@
       <p><span class="badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
       {{/if}}
       <p>Score: {{score}}</p>
+      <p>
       {{#each tags}}
-        <p><span class="badge" style="background-color: #CCCCCC">{{this}}</span></p>
+        <span class="badge" style="display: inline-block; background-color: #3E6D8E">{{this}}</span>
       {{/each}}
-      
+      </p>
     </div>
     {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
 

@@ -1,3 +1,6 @@
 .replies > .replies{
   margin-left: 20px;
+  margin-bottom: 20px;
+  background-color: oldlace;
+  padding: 10px;
 }
