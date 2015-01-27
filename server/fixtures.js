@@ -17,46 +17,49 @@ if ( Meteor.users.find().count() === 0 ) {
 if ( Questions.find().count() === 0 ) {
 	adminUser = Meteor.users.findOne({"username": "admin"});
 
-  var publishedQuestion =  {
-  	title: "First Question",
-  	text: "This is a published question",
-    score: 17,
-    tags: [ "html", "css" ],
-    createdAt: new Date().getTime(),
-    owner: adminUser._id,
-    username: adminUser.username,
-    publishedAt: new Date().getTime(),
-    publishedBy: adminUser.username
-  };
+  var cssQuestions1 = JSON.parse(Assets.getText("css-q1.json"));
 
-  q1 = Questions.insert(publishedQuestion);
+  console.log(cssQuestions1.items.length);
 
-  var firstReplyToQuestion =  {
-    question_id: q1,
-    text: "Unaccepted",
-    score: 0,
-    is_accepted: false,
-    createdAt: new Date().getTime(),
-    owner: adminUser._id,
-    username: adminUser.username,
-    publishedAt: new Date().getTime(),
-    publishedBy: adminUser.username
-  };
+  for (var i = 0, len = cssQuestions1.items.length; i < len; i++) {
+    var cssQuestion = cssQuestions1.items[i];
 
-  Answers.insert(firstReplyToQuestion);
+    console.log(i);
+    console.log(len);
 
-  var secondReplyToQuestion =  {
-    question_id: q1,
-    text: "Accepted",
-    score: 10,
-    is_accepted: true,
-    createdAt: new Date().getTime(),
-    owner: adminUser._id,
-    username: adminUser.username,
-    publishedAt: new Date().getTime(),
-    publishedBy: adminUser.username
-  };
+    var question = {
+      title: cssQuestion.title,
+      text: cssQuestion.body,
+      score: cssQuestion.score,
+      tags: cssQuestion.tags,
+      createdAt: new Date().getTime(),
+      owner: adminUser._id,
+      username: adminUser.username,
+      publishedAt: new Date().getTime(),
+      publishedBy: adminUser.username     
+    }
 
-  Answers.insert(secondReplyToQuestion);
+    question_id = Questions.insert(question);
 
+    if ( cssQuestion.answer_count !== 0 ) {
+      var cssAnswers = cssQuestion.answers;
+      for (var k = 0, alen = cssAnswers.length; k < alen; k++) {
+        var cssAnswer = cssAnswers[k];
+
+        var answer =  {
+          question_id: question_id,
+          text: cssAnswer.body,
+          score: cssAnswer.score,
+          is_accepted: cssAnswer.is_accepted,
+          createdAt: new Date().getTime(),
+          owner: adminUser._id,
+          username: adminUser.username,
+          publishedAt: new Date().getTime(),
+          publishedBy: adminUser.username
+        };
+
+        Answers.insert(answer);
+      }      
+    }
+  }
 }
