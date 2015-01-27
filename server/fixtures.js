@@ -20,6 +20,8 @@ if ( Questions.find().count() === 0 ) {
   var publishedQuestion =  {
   	title: "First Question",
   	text: "This is a published question",
+    score: 17,
+    tags: [ "html", "css" ],
     createdAt: new Date().getTime(),
     owner: adminUser._id,
     username: adminUser.username,
@@ -29,9 +31,11 @@ if ( Questions.find().count() === 0 ) {
 
   q1 = Questions.insert(publishedQuestion);
 
-  var aReplyToQuestion =  {
+  var firstReplyToQuestion =  {
     question_id: q1,
-    text: "This is a reply to question one",
+    text: "Unaccepted",
+    score: 0,
+    is_accepted: false,
     createdAt: new Date().getTime(),
     owner: adminUser._id,
     username: adminUser.username,
@@ -39,17 +43,20 @@ if ( Questions.find().count() === 0 ) {
     publishedBy: adminUser.username
   };
 
-  Answers.insert(aReplyToQuestion);
+  Answers.insert(firstReplyToQuestion);
 
-  var unpublishedQuestion =  {
-  	title: "Second Question",
-  	text: "This is an unpublished question",
+  var secondReplyToQuestion =  {
+    question_id: q1,
+    text: "Accepted",
+    score: 10,
+    is_accepted: true,
     createdAt: new Date().getTime(),
     owner: adminUser._id,
     username: adminUser.username,
-    publishedAt: null,
-    publishedBy: null
+    publishedAt: new Date().getTime(),
+    publishedBy: adminUser.username
   };
 
-  Questions.insert(unpublishedQuestion);
+  Answers.insert(secondReplyToQuestion);
+
 }

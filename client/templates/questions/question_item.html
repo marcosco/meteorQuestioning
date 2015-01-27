@@ -7,6 +7,11 @@
       {{#if isPublisher}}
       <p><span class="badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
       {{/if}}
+      <p>Score: {{score}}</p>
+      {{#each tags}}
+        <p><span class="badge" style="background-color: #CCCCCC">{{this}}</span></p>
+      {{/each}}
+      
     </div>
     {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
 
