@@ -17,6 +17,8 @@ if ( Meteor.users.find().count() === 0 ) {
 if ( Questions.find().count() === 0 ) {
 	adminUser = Meteor.users.findOne({"username": "admin"});
 
+  Sanitizer = Meteor.npmRequire('sanitize-html');
+
   function loadSeeds(file) {
 
     var cssQuestions1 = JSON.parse(Assets.getText(file));
@@ -27,8 +29,15 @@ if ( Questions.find().count() === 0 ) {
       var cssQuestion = cssQuestions1.items[i];
 
       var question = {
-        title: cssQuestion.title,
-        text: cssQuestion.body,
+        title: Sanitizer(cssQuestion.title),
+        text: Sanitizer(cssQuestion.body,
+                  { 
+                    allowedTags: false,
+                    transformTags: {
+                      'style': 'pre',
+                      'script': 'code'
+                    }
+                  }),
         score: cssQuestion.score,
         tags: cssQuestion.tags,
         createdAt: new Date().getTime(),
@@ -47,7 +56,14 @@ if ( Questions.find().count() === 0 ) {
 
           var answer =  {
             question_id: question_id,
-            text: cssAnswer.body,
+            text: Sanitizer(cssAnswer.body, 
+                  {
+                    allowedTags: false,
+                    transformTags: {
+                      'style': 'pre',
+                      'script': 'code'
+                    }
+                  }),
             score: cssAnswer.score,
             is_accepted: cssAnswer.is_accepted,
             createdAt: new Date().getTime(),

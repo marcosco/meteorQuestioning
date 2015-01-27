@@ -11,3 +11,7 @@ iron:router
 spin
 accounts-ui-bootstrap-3
 alanning:roles
+meteorhacks:npm
+
+
+npm-container
