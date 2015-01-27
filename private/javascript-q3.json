@@ -488,7 +488,7 @@
             "ecmascript-5",
             "ecma262"
           ],
-        "title" : "Clarity on the difference between "LexicalEnvironment" and "VariableEnvironment" in ECMAScript/JavaScript"
+        "title" : "Clarity on the difference between LexicalEnvironment and VariableEnvironment in ECMAScript/JavaScript"
       },
       { "answer_count" : 3,
         "answers" : [ { "body" : "<p>An instantiated function has a scope.  It doesn't matter whether it was instantiated as part of a function declaration statement or a function instantiation expression.</p>\n\n<p>(It's probably more correct to say that an instantiated function has a scope <em>when it is called</em>, and that every call produces a <em>distinct</em> scope.)</p>\n",
@@ -536,7 +536,7 @@
         "question_id" : 15034910,
         "score" : 3,
         "tags" : [ "javascript" ],
-        "title" : "Why "typeof + ''" returns 'number'?"
+        "title" : "Why typeof + '' returns 'number'?"
       },
       { "answer_count" : 2,
         "answers" : [ { "body" : "<p><a href=\"http://www.ecma-international.org/ecma-262/5.1/#sec-15.3.2.1\" rel=\"nofollow\">section 15.3.2.1</a> of the ECMA Script specification speaks about the new Function(...) expression, and the new Function(...) expression itself refers to the same logic as specified in section 13.2.</p>\n\n<p>Bullet number 11 about the new Function(...) expression specifies...</p>\n\n<blockquote>\n  <p>Return a new Function object created as specified in 13.2 passing P as the FormalParameterListopt and body as the FunctionBody. Pass in the Global Environment as the Scope parameter and strict as the Strict flag.</p>\n</blockquote>\n\n<p>Section 13.2 is the single source of function creation logic, whether creating a function expression, function declaration, or invoking the Function constructor.</p>\n\n<p>So to answer the question, no.  Creating a function declaration/expression doesn't call new Function(...).</p>\n",
@@ -734,7 +734,7 @@
               "is_accepted" : false,
               "score" : 1
             },
-            { "body" : "<p>This is a feature called <a href=\"https://developer.mozilla.org/en-US/docs/JavaScript/New_in_JavaScript/1.7#Destructuring_assignment_%28Merge_into_own_page.2Fsection%29\" rel=\"nofollow\">destructuring assignment</a>, which was added in JavaScript 1.7. It is not a part of ECMAScript 5: <a href=\"http://stackoverflow.com/questions/1330498/what-is-cross-browser-support-for-javascript-1-7s-new-features-specifically-arr\">What is cross browser support for JavaScript 1.7's new features? Specifically array comprehensions and the "let" statement</a></p>\n",
+            { "body" : "<p>This is a feature called <a href=\"https://developer.mozilla.org/en-US/docs/JavaScript/New_in_JavaScript/1.7#Destructuring_assignment_%28Merge_into_own_page.2Fsection%29\" rel=\"nofollow\">destructuring assignment</a>, which was added in JavaScript 1.7. It is not a part of ECMAScript 5: <a href=\"http://stackoverflow.com/questions/1330498/what-is-cross-browser-support-for-javascript-1-7s-new-features-specifically-arr\">What is cross browser support for JavaScript 1.7's new features? Specifically array comprehensions and the let statement</a></p>\n",
               "is_accepted" : true,
               "score" : 7
             },
@@ -809,7 +809,7 @@
             "function",
             "object"
           ],
-        "title" : "Javascript "this" variable confusion"
+        "title" : "Javascript this variable confusion"
       },
       { "answer_count" : 1,
         "answers" : [ { "body" : "<p>The only way to affect the normal scrollbars are using Microsoft IE specific proerties.</p>\n\n<p>You can see more here <a href=\"http://www.webdevelopersnotes.com/tips/html/coloring_scrollbars_using_styles_css_properties.php3\" rel=\"nofollow\">http://www.webdevelopersnotes.com/tips/html/coloring_scrollbars_using_styles_css_properties.php3</a></p>\n\n<p>But that probabrlu do not work in all browsers.</p>\n\n<p>The alternative is to use a scrollbar component that uses overflow:hidden + javascript to create your own scrollbar.</p>\n\n<p>And I do not know of any of those for SVG.  </p>\n\n<p>The examples for jQuery you ha uses this later tecnique, it's not the normal browser scrollbars but rather div layers and images.</p>\n\n<p>In your case you might be able to use them if you place the ifram inside a div that uses the jQuery solution to scroll.  Then make the iframe as large as the SVG, that way you scroll the whole iframe window within the div layer.</p>\n",
@@ -1204,7 +1204,7 @@
             "node.js",
             "ecmascript-5"
           ],
-        "title" : "Is there a JavaScript documentation generator that supports parameter shifting and "polymorphism"?"
+        "title" : "Is there a JavaScript documentation generator that supports parameter shifting and polymorphism?"
       },
       { "answer_count" : 2,
         "answers" : [ { "body" : "<p>The official documentation says that</p>\n\n<blockquote>\n  <p>The promise api allows for composition that is very hard\n  to do with the traditional callback (CPS ) approach. For more on this\n  please see the Q documentation  especially the section on serial or\n  parallel joining of promises.</p>\n</blockquote>\n\n<p><a href=\"http://docs.angularjs.org/api/ng/service/%24q\" rel=\"nofollow\">http://docs.angularjs.org/api/ng/service/$q</a></p>\n\n<p>I think the easiest explanation could be that it's a much better and cleaner way to do a serial or very complex callbacks than the traditional way.</p>\n\n<p>This is the link you can read more about the benefit of using promise:</p>\n\n<p><a href=\"https://github.com/kriskowal/uncommonjs/blob/master/promises/specification.md\" rel=\"nofollow\">promises specification</a></p>\n",
@@ -1541,7 +1541,7 @@
         "question_id" : 27140625,
         "score" : 0,
         "tags" : [ "javascript" ],
-        "title" : "How to infer "config.headers = config.headers || {};""
+        "title" : "How to infer config.headers = config.headers || {};"
       },
       { "answer_count" : 2,
         "answers" : [ { "body" : "<p>It's obvious that if not ES6, it would be implemented in ES5, or the current iteration of jaavacript. Also instead of waiting for it, you could write your own</p>\n\n<pre><code>String.prototype.endsWith = String.prototype.endsWith || function(str){\n   return new RegExp(str + \"$\").test(str);\n}\n</code></pre>\n",

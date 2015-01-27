@@ -26,7 +26,7 @@
             "split",
             "jdom"
           ],
-        "title" : "org.jdom.IllegalAddException: The Content already has an existing parent "root""
+        "title" : "org.jdom.IllegalAddException: The Content already has an existing parent root"
       },
       { "answer_count" : 4,
         "answers" : [ { "body" : "<p>Javascript cannot modify files on disk, it only runs for the client in the client's web browser. </p>\n\n<p>To actually write to and from files on a server, you have to use server-side languages and technologies, like PHP or ASP.</p>\n",
@@ -629,7 +629,7 @@
         "tags" : [ "xml",
             "xml-namespaces"
           ],
-        "title" : "GoogleScript XmlService method setAttribute for addding "xml:lang""
+        "title" : "GoogleScript XmlService method setAttribute for addding xml:lang"
       },
       { "answer_count" : 0,
         "body" : "<p>I never worked with XML/GML so I need help.</p>\n\n<p>I have GML schema which imports official GML definition. When I use XMLSpy to create database structure from existing schema, it lasts very long. That is because, I suppose, it needs to load tons of unused things from official definition (geometry etc). I need to pull out those elements from definition which I need, nothing else.</p>\n\n<p>Is there any way to get into a new schema only those parts of the official GML schema (AbstractFeatureType, AbstractFeatureMemberType and several others) and use it as GML definition? I don't need geometry from GML, because I'm getting it in other ways, I just need the information that defines abstract classes.</p>\n",
@@ -797,7 +797,7 @@
             "apache",
             "apache-camel"
           ],
-        "title" : "How does one Set the "Pick" Expression for Apache Camel's FlexibleAggregationStrategy in Spring XML?"
+        "title" : "How does one Set the Pick Expression for Apache Camel's FlexibleAggregationStrategy in Spring XML?"
       },
       { "answer_count" : 1,
         "answers" : [ { "body" : "<p>I solved this problem by building it with maven shade.</p>\n\n<pre><code><build>\n    <plugins>\n        <plugin>\n            <groupId>org.apache.maven.plugins</groupId>\n            <artifactId>maven-shade-plugin</artifactId>\n            <version>2.3</version>\n            <executions>\n                <execution>\n                    <phase>package</phase>\n                    <goals>\n                        <goal>shade</goal>\n                    </goals>\n                    <configuration>\n                        <transformers>\n                            <transformer implementation=\"org.apache.maven.plugins.shade.resource.ServicesResourceTransformer\" />\n                            <transformer implementation=\"org.apache.maven.plugins.shade.resource.ManifestResourceTransformer\">\n                                <mainClass>com.google.MainClass</mainClass>\n                            </transformer>\n                        </transformers>\n                    </configuration>\n                </execution>\n            </executions>\n        </plugin>\n    </plugins>\n</build>\n</code></pre>\n\n<p>The most important line here is this:</p>\n\n<pre><code><transformer implementation=\"org.apache.maven.plugins.shade.resource.ServicesResourceTransformer\" />\n</code></pre>\n\n<p>The shade plugin configuration needs <a href=\"https://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html#ServicesResourceTransformer\" rel=\"nofollow\">the service transformer</a> which merges the META-INF/services files used by <a href=\"http://docs.oracle.com/javase/tutorial/ext/basics/spi.html\" rel=\"nofollow\">the service discovery mechanism</a>. </p>\n",
@@ -998,7 +998,7 @@
             "drawable",
             "imagebutton"
           ],
-        "title" : "Error in ImageButtons at src:"@drawable/..." Top level element is not completed"
+        "title" : "Error in ImageButtons at src:@drawable/... Top level element is not completed"
       },
       { "answer_count" : 2,
         "answers" : [ { "body" : "<p>Assuming you are using <code>Ant</code>:</p>\n\n<pre><code>...\n<xslt basedir=\"${dir.reports.checkstyle.xml}\" destdir=\"${dir.reports.checkstyle.html}\" style=\"${dir.checkstyle}/contrib/checkstyle-frames.xsl\" >\n    <classpath>\n            <fileset dir=\"${dir.xalan}\">\n                    <include name=\"*.jar\"/>\n            </fileset>\n    </classpath>\n</xslt>\n...\n</code></pre>\n\n<p>Assuming you are using <code>Maven</code>:</p>\n\n<pre><code>mvn checkstyle:report xdoc\n</code></pre>\n",

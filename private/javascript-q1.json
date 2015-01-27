@@ -170,7 +170,7 @@
         "tags" : [ "javascript",
             "jquery"
           ],
-        "title" : "Is it possible to listen to a "style change" event?"
+        "title" : "Is it possible to listen to a style change event?"
       },
       { "answer_count" : 3,
         "answers" : [ { "body" : "<p>That means this page was obtained after doing a POST request. The best way to stop that is to redirect to the same page after having processed the POST request in your server code.</p>\n",
@@ -391,7 +391,7 @@
         "title" : "javascript: how to fetch the content of a web page"
       },
       { "answer_count" : 8,
-        "answers" : [ { "body" : "<p>You can not disable a table. What do you want to achieve with this? The tables are read only anyway.</p>\n\n<p>If you have input tags in the table, you can disable those one by one.</p>\n\n<p>See also <a href=\"http://stackoverflow.com/questions/2742627/disabling-an-html-table-with-javascript\">"Disabling" an HTML table with javascript</a></p>\n",
+        "answers" : [ { "body" : "<p>You can not disable a table. What do you want to achieve with this? The tables are read only anyway.</p>\n\n<p>If you have input tags in the table, you can disable those one by one.</p>\n\n<p>See also <a href=\"http://stackoverflow.com/questions/2742627/disabling-an-html-table-with-javascript\">Disabling an HTML table with javascript</a></p>\n",
               "is_accepted" : false,
               "score" : 2
             },
@@ -566,7 +566,7 @@
             "html5",
             "internet-explorer-10"
           ],
-        "title" : "<meta http-equiv="X-UA-Compatible" content="IE=10"> Ignored because document is finalised"
+        "title" : "<meta http-equiv=X-UA-Compatible content=IE=10> Ignored because document is finalised"
       },
       { "answer_count" : 3,
         "answers" : [ { "body" : "<p>Try removing the <code>return</code> from the onclick, and adding <code>return false;</code> after you call your function. </p>\n\n<pre><code><a onclick=\"trackOutboundLink(this); return false;\" href=\"google.com\" target=\"_blank\">\n   link\n</a>\n</code></pre>\n\n<p>Also, remove <code>return true;</code> to your trackOutboundLink function.</p>\n",
@@ -1738,7 +1738,7 @@
             "jquery",
             "icheck"
           ],
-        "title" : "Avoid "ifChanged" event handler when setting checkbox via Javascript"
+        "title" : "Avoid ifChanged event handler when setting checkbox via Javascript"
       },
       { "answer_count" : 3,
         "answers" : [ { "body" : "<p>Actually you don't have a standard curly underline just by using CSS, but check this tutorial on how to create one yourself:</p>\n\n<p>Taken from here: <a href=\"http://www.phpied.com/curly-underline/\" rel=\"nofollow\">http://www.phpied.com/curly-underline/</a></p>\n\n<pre><code>.curly-underline {\n    background: url(underline.gif) bottom repeat-x;\n}\n</code></pre>\n",
@@ -2031,7 +2031,7 @@
             "sortable",
             "jquery-ui-sortable"
           ],
-        "title" : "JQuery UI sortable in a scrollable container - scroll position "jumps" when sorting"
+        "title" : "JQuery UI sortable in a scrollable container - scroll position jumps when sorting"
       },
       { "answer_count" : 1,
         "answers" : [ { "body" : "<p>It seems that it was a PrimeFaces bug, fixed for PF >= 5 : <a href=\"https://code.google.com/p/primefaces/issues/detail?id=3876\" rel=\"nofollow\">https://code.google.com/p/primefaces/issues/detail?id=3876</a></p>\n",

@@ -1038,7 +1038,7 @@
             "jquery",
             "undefined"
           ],
-        "title" : "variable === undefined vs. typeof variable === "undefined""
+        "title" : "variable === undefined vs. typeof variable === undefined"
       },
       { "answer_count" : 1,
         "answers" : [ { "body" : "<p>You'd use <a href=\"https://github.com/petkaantonov/bluebird/blob/master/API.md#settle---promise\" rel=\"nofollow\"><code>.settle</code></a>:</p>\n\n<pre><code>Promise.settle([p1,p2,p3,p4]).then(function(results){\n  results.forEach(function(result){\n     if(result.isFulfilled()){\n         // access result.value()\n     } else {\n         // access result.reason()\n     }\n  });\n});\n</code></pre>\n\n<p>In newer bluebird <code>settle</code> is generalized by <a href=\"https://github.com/petkaantonov/bluebird/blob/master/API.md#reflect---promisepromiseinspection\" rel=\"nofollow\"><code>.reflect</code></a> which separates aggregation from the notion of a promise inspection and lets you do what <code>.settle</code> does but to other actions like <code>.any</code> or <code>.some</code> as well:</p>\n\n<pre><code>// same as above, using reflect\nPromise.map([p1,p2,p3,p4], function(el){ \n    return el.reflect();\n}).then(function(results){\n  results.forEach(function(result){\n     if(result.isFulfilled()){\n         // access result.value()\n     } else {\n         // access result.reason()\n     }\n  });\n});\n</code></pre>\n",
@@ -2521,7 +2521,7 @@
             "coffeescript",
             "gruntjs"
           ],
-        "title" : "Grunt: Concurrent:server causes "Warning: Task "coffee:server" not found.""
+        "title" : "Grunt: Concurrent:server causes Warning: Task coffee:server not found."
       },
       { "answer_count" : 7,
         "answers" : [ { "body" : "<p>Everything you need to know about underscore template is <a href=\"http://underscorejs.org/#template\">here</a>. Only 3 things to keep in mind:</p>\n\n<ol>\n<li><code><%  %></code> - to execute some code</li>\n<li><code><%= %></code> - to print some value in template</li>\n<li><code><%- %></code> - to print some values with HTML escaped</li>\n</ol>\n\n<p>That's all about it.</p>\n\n<p>Simple example:</p>\n\n<pre><code>var tpl = _.template(\"<h1>Some text: <%= foo %></h1>\");\n</code></pre>\n\n<p>then <code>tpl({foo: \"blahblah\"})</code> would be rendered to the string <code><h1>Some text: blahblah</h1></code></p>\n",

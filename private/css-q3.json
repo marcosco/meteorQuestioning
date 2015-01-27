@@ -2869,7 +2869,7 @@
         "question_id" : 8824395,
         "score" : 2,
         "tags" : [ "css" ],
-        "title" : "Still space between elements (buttons) with "margin: 0"?"
+        "title" : "Still space between elements (buttons) with margin: 0?"
       },
       { "answer_count" : 1,
         "answers" : [ { "body" : "<p>I called the resize method of bordercontainer and now its rendering! Provide an attachpoint name to the BorderContainer, say bc, and in the corresponding JS file from where you are attaching the widget, use the resize method after startup:\n    resize: function () {\n        this.bc.resize(arguments);\n        this.inherited(arguments);\n    }\nThis worked for me! :)</p>\n",
