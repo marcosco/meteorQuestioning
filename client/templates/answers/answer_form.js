@@ -4,7 +4,6 @@ Template.answerForm.events({
 
     var replyProperties = {
       reply: $(e.target).find('[name=replyId]').val(),
-      title: "Re: " + $(e.target).find('[name=replyTitle]').val(),
       text: $(e.target).find('[name=replyText]').val()
     }
 
