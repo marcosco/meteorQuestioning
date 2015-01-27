@@ -2,12 +2,12 @@ Meteor.publish(null, function (){
   return Meteor.roles.find({})
 })
 
-Meteor.publish('questions', function() {
+Meteor.publish('questions', function(limit) {
   if (Roles.userIsInRole(this.userId, ['publisher','administrator'])) {
-      return Questions.find();
+      return Questions.find({}, { limit: limit });
     }
 
-  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] });
+  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] }, { limit: limit });
 });
 
 Meteor.publish('answers', function() {
