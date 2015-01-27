@@ -30,7 +30,7 @@ if ( Questions.find().count() === 0 ) {
   q1 = Questions.insert(publishedQuestion);
 
   var aReplyToQuestion =  {
-    reply: q1,
+    question_id: q1,
     text: "This is a reply to question one",
     createdAt: new Date().getTime(),
     owner: adminUser._id,

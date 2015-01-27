@@ -3,7 +3,7 @@ Template.answerForm.events({
     e.preventDefault();
 
     var replyProperties = {
-      reply: $(e.target).find('[name=replyId]').val(),
+      question_id: $(e.target).find('[name=question_id]').val(),
       text: $(e.target).find('[name=replyText]').val()
     }
 
