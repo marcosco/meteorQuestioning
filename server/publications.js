@@ -10,6 +10,10 @@ Meteor.publish('questions', function() {
   return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] });
 });
 
+Meteor.publish('answers', function() {
+  return Answers.find();
+});
+
 Meteor.publish('users', function() {
   if (Roles.userIsInRole(this.userId, 'administrator')) {
       return Meteor.users.find();

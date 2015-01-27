@@ -41,7 +41,7 @@ if ( Questions.find().count() === 0 ) {
     publishedBy: adminUser.username
   };
 
-  Questions.insert(aReplyToQuestion);
+  Answers.insert(aReplyToQuestion);
 
   var unpublishedQuestion =  {
     reply: null,

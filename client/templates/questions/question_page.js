@@ -9,7 +9,7 @@ Template.questionPage.events({
 Template.questionPage.helpers({
   replies: function() {
     console.log(this._id);
-    replies = Questions.find({reply: this._id}, {sort: {createdAt: -1}});
+    replies = Answers.find({reply: this._id}, {sort: {createdAt: -1}});
     return replies;
   },
 
@@ -19,13 +19,5 @@ Template.questionPage.helpers({
     } else {
       return false;
     }
-  }
-});
-
-Template.replyPage.helpers({
-  replies: function() {
-    console.log(this._id);
-    replies = Questions.find({reply: this._id}, {sort: {createdAt: -1}});
-    return replies;
   }
 });

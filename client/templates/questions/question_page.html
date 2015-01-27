@@ -2,21 +2,13 @@
   {{> questionItem}}
   {{#if isPublisher}}
   <div>
-    {{> questionReply}}
+    {{> answerForm}}
   </div>
   {{/if}}
   <div class="replies">
     {{#each replies}}
-      {{> replyPage}}
+      {{> answerItem}}
     {{/each}}
   </div>
 </template>
 
-<template name="replyPage">
-  {{> questionItem}}
-  <div class="replies">
-    {{#each replies}}
-      {{> replyPage}}
-    {{/each}}
-  </div>
-</template>
