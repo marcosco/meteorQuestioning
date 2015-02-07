@@ -7,7 +7,9 @@
       {{#if isPublisher}}
       <p><span class="badge question-badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
       {{/if}}
-      <p>Score: {{score}}</p>
+      <p>Score: <span class="glyphicon glyphicon-minus question-minus" aria-hidden="true"></span>
+        {{score}}
+        <span class="glyphicon glyphicon-plus question-plus" aria-hidden="true"></span></p>
       <p>
       {{#each tags}}
         <span class="badge" style="display: inline-block; background-color: #3E6D8E">{{this}}</span>

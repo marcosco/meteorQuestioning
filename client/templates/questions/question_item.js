@@ -48,3 +48,17 @@ Template.questionItem.helpers({
     }    
   },    
 });
+
+Template.questionItem.events({
+  'click .question-minus': function(e) {
+    e.preventDefault();
+
+    Meteor.call("decQuestionScore", this._id);
+  },
+
+  'click .question-plus': function(e) {
+    e.preventDefault();
+
+    Meteor.call("incQuestionScore", this._id);
+  }
+})

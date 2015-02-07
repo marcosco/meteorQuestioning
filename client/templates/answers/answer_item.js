@@ -25,5 +25,17 @@ Template.answerItem.events({
     e.preventDefault();
 
     Meteor.call("setAccepted", this._id);
-  }
+  },
+
+  'click .answer-minus': function(e) {
+    e.preventDefault();
+
+    Meteor.call("decAnswerScore", this._id);
+  },
+
+  'click .answer-plus': function(e) {
+    e.preventDefault();
+
+    Meteor.call("incAnswerScore", this._id);
+  }  
 });

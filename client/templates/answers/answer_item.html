@@ -4,7 +4,9 @@
       <h3>{{title}}</h3>
       <p>{{{text}}}</p>
       <p><i>Authored by: {{username}} at {{createdAt}}</i></p>
-      <p>Score: {{score}}</p>
+      <p>Score: <span class="glyphicon glyphicon-minus answer-minus" aria-hidden="true"></span>
+        {{score}}
+        <span class="glyphicon glyphicon-plus answer-plus" aria-hidden="true"></span></p>
       <p><span class="badge answer-badge" style="background-color: {{badgeColor}}">{{isAccepted}}</span></p>
     </div>
   </div>
