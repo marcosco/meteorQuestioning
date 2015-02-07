@@ -30,5 +30,21 @@ Template.questionItem.helpers({
     } else {
       return false;
     }
-  }
+  },
+
+  isAnswered: function() {
+    if(this.is_answered) {
+      return "Answered";
+    } else {
+      return "Not Answered";
+    }
+  },
+
+  badgeColor: function() {
+    if(this.is_answered) {
+      return "#17a103";
+    } else {
+      return "#777";
+    }    
+  },    
 });

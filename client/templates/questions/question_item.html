@@ -1,11 +1,11 @@
 <template name="questionItem">
   <div class="question">
     <div class="question-content">
-      <h3><a href="{{pathFor 'questionPage'}}">{{title}}</a></h3>
+      <h3><a href="{{pathFor 'questionPage'}}">{{title}}</a><span class="badge" style="background-color: {{badgeColor}}">{{isAnswered}}</span></h3>
       <p>{{{text}}}</p>
       <p><i>Authored by: {{username}} at {{createdAt}}</i></p>
       {{#if isPublisher}}
-      <p><span class="badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
+      <p><span class="badge question-badge" style="background-color: {{badgeColor}}">{{isPublished}}</span></p>
       {{/if}}
       <p>Score: {{score}}</p>
       <p>

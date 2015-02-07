@@ -1,5 +1,5 @@
 Template.questionPage.events({
-  'click .badge': function(e) {
+  'click .question-badge': function(e) {
     e.preventDefault();
 
     Meteor.call("togglePublish", this._id);

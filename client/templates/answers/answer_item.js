@@ -19,3 +19,11 @@ Template.answerItem.helpers({
     }    
   },  
 });
+
+Template.answerItem.events({
+  'click .answer-badge': function(e) {
+    e.preventDefault();
+
+    Meteor.call("setAccepted", this._id);
+  }
+});

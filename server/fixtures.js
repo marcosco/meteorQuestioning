@@ -43,6 +43,7 @@ if ( Questions.find().count() === 0 ) {
         createdAt: new Date().getTime(),
         owner: adminUser._id,
         username: adminUser.username,
+        is_answered: null,
         publishedAt: new Date().getTime(),
         publishedBy: adminUser.username     
       }
@@ -73,7 +74,11 @@ if ( Questions.find().count() === 0 ) {
             publishedBy: adminUser.username
           };
 
-          Answers.insert(answer);
+          answer_id = Answers.insert(answer);
+
+          if ( cssAnswer.is_accepted ) {
+            Questions.update( { _id: question_id }, { $set: { is_answered: answer_id } } );
+          }
         }      
       }
     }    
