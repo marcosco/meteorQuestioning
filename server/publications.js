@@ -4,10 +4,19 @@ Meteor.publish(null, function (){
 
 Meteor.publish('questions', function(limit) {
   if (Roles.userIsInRole(this.userId, ['publisher','administrator'])) {
-      return Questions.find({}, { limit: limit });
+      return Questions.find({}, { 
+                sort: {
+                  createdAt: -1
+                },
+                limit: limit });
     }
 
-  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] }, { limit: limit });
+  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] },
+      { 
+        sort: {
+          createdAt: -1
+        },
+        limit: limit });
 });
 
 Meteor.publish('answers', function() {

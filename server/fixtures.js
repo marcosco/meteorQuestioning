@@ -84,15 +84,15 @@ if ( Questions.find().count() === 0 ) {
     }    
   };
 
-  loadSeeds("css-q1.json");
-  loadSeeds("css-q2.json");
-  loadSeeds("css-q3.json");
-  loadSeeds("javascript-q1.json");
-  loadSeeds("javascript-q2.json");
-  loadSeeds("javascript-q3.json");
-  loadSeeds("xml-q1.json");
-  loadSeeds("xml-q2.json");
-  loadSeeds("xml-q3.json");
+ loadSeeds("css-q1.json");
+ loadSeeds("css-q2.json");
+ loadSeeds("css-q3.json");
+ loadSeeds("javascript-q1.json");
+ loadSeeds("javascript-q2.json");
+ loadSeeds("javascript-q3.json");
+ loadSeeds("xml-q1.json");
+ loadSeeds("xml-q2.json");
+ loadSeeds("xml-q3.json");
 
 
 }
