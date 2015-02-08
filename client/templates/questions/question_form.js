@@ -4,7 +4,8 @@ Template.questionForm.events({
 
     var question = {
       title: $(e.target).find('[name=questionTitleModal]').val(),
-      text: $(e.target).find('[name=questionTextModal]').val()
+      text: $(e.target).find('[name=questionTextModal]').val(),
+      tags: $(e.target).find('[name=questionTagsModal]').val()
     }
     Meteor.call("addQuestion", question, function(error, id) {
       if (error)

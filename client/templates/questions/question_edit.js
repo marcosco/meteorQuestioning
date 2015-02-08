@@ -7,7 +7,8 @@ Template.questionEdit.events({
     var questionProperties = {
       id: currentQuestionId,
       title: $(e.target).find('[name=questionTitle]').val(),
-      text: $(e.target).find('[name=questionText]').val()
+      text: $(e.target).find('[name=questionText]').val(),
+      tags: $(e.target).find('[name=questionTags]').val()
     }
 
     Meteor.call("updateQuestion", questionProperties, function(error, id) {
