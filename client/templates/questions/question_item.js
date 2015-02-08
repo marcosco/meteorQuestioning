@@ -11,7 +11,7 @@ Template.questionItem.helpers({
     }
   },
 
-  badgeColor: function() {
+  pubBadgeColor: function() {
     if(this.publishedAt != null) {
       return "#17a103";
     } else {
