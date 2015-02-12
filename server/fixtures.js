@@ -11,7 +11,7 @@ if ( Meteor.users.find().count() === 0 ) {
     }
   });
 
-  Roles.addUsersToRoles(adminId, 'administrator');
+  Roles.addUsersToRoles(adminId, ['administrator', 'publisher']);
 }
 
 if ( Questions.find().count() === 0 ) {

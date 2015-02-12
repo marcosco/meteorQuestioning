@@ -1,0 +1,13 @@
+<template name="questionsUnpublishedList">
+  <h1>Unpublished questions</h1>
+  <div class="questions">
+    {{#each questions}}
+      {{> questionItem}}
+    {{/each}}
+  </div>
+  {{#if moreResults}}
+    <div id="showMoreResults" style="margin-left: 25px;">
+      <span class="loading">Loading...</span>
+    </div>
+  {{/if}}  
+</template>
