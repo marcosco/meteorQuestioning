@@ -6,14 +6,6 @@
   <li class="{{ activeIfTemplateIs 'questionsList' }}">
     <a href="{{pathFor 'questionsList'}}">Home</a>
   </li>
-  <li class="{{ activeIfTemplateIs 'questionsUnansweredList' }}">
-    <a href="{{pathFor 'questionsUnansweredList'}}">Unanswered</a>
-  </li>  
-  {{#if isInRole 'publisher'}}
-  <li class="{{ activeIfTemplateIs 'questionsUnpublishedList' }}">
-    <a href="{{pathFor 'questionsUnpublishedList'}}">Unpublished</a>
-  </li>
-  {{/if}}  
   <li class="{{ activeIfTemplateIs 'about' }}">
     <a href="{{pathFor 'about'}}">About</a>
   </li>
