@@ -3,14 +3,14 @@
 </template>
 
 <template name="navItems">
-  <li class="{{ activeIfTemplateIs 'questionsList' }}">
+  <li class="{{ activeIfTemplateIs 'QuestionsList' }}">
     <a href="{{pathFor 'questionsList'}}">Home</a>
   </li>
-  <li class="{{ activeIfTemplateIs 'about' }}">
+  <li class="{{ activeIfTemplateIs 'About' }}">
     <a href="{{pathFor 'about'}}">About</a>
   </li>
   {{#if currentUser}}
-  <li class="{{ activeIfTemplateIs 'questionsMineList' }}">
+  <li class="{{ activeIfTemplateIs 'QuestionsMineList' }}">
     <a href="{{pathFor 'questionsMineList'}}">My questions</a>
   </li>  
   <li>
@@ -18,7 +18,7 @@
   </li>
   {{/if}}
   {{#if isInRole 'administrator'}}
-  <li class="{{ activeIfTemplateIs 'manageUsers' }}">
+  <li class="{{ activeIfTemplateIs 'ManageUsers' }}">
     <a href="{{pathFor 'manageUsers'}}">Manage Users</a>
   </li>
   {{/if}}

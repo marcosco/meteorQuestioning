@@ -27,7 +27,7 @@
           </li>
             {{> loginButtons }} <!-- here -->
             {{#if currentUser}}
-              <li class="{{ activeIfTemplateIs 'userProfile' }}">
+              <li class="{{ activeIfTemplateIs 'UserProfile' }}">
                 <a href="{{pathFor 'userProfile'}}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
               </li>
             {{/if}}
@@ -36,30 +36,7 @@
       </div><!--/.nav-collapse -->
     </div>
   </nav>
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#secondary-navbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            </div>
-            <div id="secondary-navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="{{ activeIfTemplateIs 'questionsList' }}">
-                      <a href="{{pathFor 'questionsList'}}">All</a>
-                    </li>
-                  <li class="{{ activeIfTemplateIs 'questionsUnansweredList' }}">
-                    <a href="{{pathFor 'questionsUnansweredList'}}">Unanswered</a>
-                  </li>  
-                  {{#if isInRole 'publisher'}}
-                  <li class="{{ activeIfTemplateIs 'questionsUnpublishedList' }}">
-                    <a href="{{pathFor 'questionsUnpublishedList'}}">Unpublished</a>
-                  </li>
-                  {{/if}}  
-                </ul>
-            </div>
-        </div>
-    </nav>  
+  {{#if equals category "questions"}}
+  {{> questionsNav}}
+  {{/if}}
 </template>

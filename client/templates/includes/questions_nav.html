@@ -1,0 +1,28 @@
+<template name="questionsNav">
+  <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#secondary-navbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <div id="secondary-navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="{{ activeIfTemplateIs 'QuestionsList' }}">
+                  <a href="{{pathFor 'questionsList'}}">All</a>
+                </li>
+                <li class="{{ activeIfTemplateIs 'QuestionsUnansweredList' }}">
+                  <a href="{{pathFor 'questionsUnansweredList'}}">Unanswered</a>
+                </li>  
+                {{#if isInRole 'publisher'}}
+                <li class="{{ activeIfTemplateIs 'QuestionsUnpublishedList' }}">
+                  <a href="{{pathFor 'questionsUnpublishedList'}}">Unpublished</a>
+                </li>
+                {{/if}}  
+              </ul>
+          </div>
+      </div>
+  </nav>  
+</template>
