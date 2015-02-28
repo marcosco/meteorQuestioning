@@ -1,0 +1,28 @@
+<template name="profileNav">
+  <nav class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#secondary-navbar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+          </div>
+          <div id="secondary-navbar" class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li class="{{ activeIfTemplateIs 'QuestionsMineList' }}">
+                  <a href="{{pathFor 'questionsMineList'}}">My questions</a>
+                </li>
+                {{#if isInRole 'administrator'}}
+                <li class="{{ activeIfTemplateIs 'ManageUsers' }}">
+                  <a href="{{pathFor 'manageUsers'}}">Manage Users</a>
+                </li>
+                {{/if}}
+                <li class="{{ activeIfTemplateIs 'UserProfile' }}">
+                  <a href="{{pathFor 'userProfile'}}">Profile</a>
+                </li>
+              </ul>
+          </div>
+      </div>
+  </nav>  
+</template>

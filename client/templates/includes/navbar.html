@@ -4,22 +4,14 @@
 
 <template name="navItems">
   <li class="{{ activeIfTemplateIs 'QuestionsList' }}">
-    <a href="{{pathFor 'questionsList'}}">Home</a>
+    <a href="{{pathFor 'questionsList'}}">Questions</a>
   </li>
   <li class="{{ activeIfTemplateIs 'About' }}">
     <a href="{{pathFor 'about'}}">About</a>
   </li>
   {{#if currentUser}}
-  <li class="{{ activeIfTemplateIs 'QuestionsMineList' }}">
-    <a href="{{pathFor 'questionsMineList'}}">My questions</a>
-  </li>  
   <li>
     <a data-toggle="modal" href="#questionModal" id="submitQuestion">Submit a question</a>
-  </li>
-  {{/if}}
-  {{#if isInRole 'administrator'}}
-  <li class="{{ activeIfTemplateIs 'ManageUsers' }}">
-    <a href="{{pathFor 'manageUsers'}}">Manage Users</a>
   </li>
   {{/if}}
 </template>
