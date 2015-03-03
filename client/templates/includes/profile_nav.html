@@ -13,6 +13,9 @@
                 <li class="{{ activeIfTemplateIs 'QuestionsMineList' }}">
                   <a href="{{pathFor 'questionsMineList'}}">My questions</a>
                 </li>
+                <li class="{{ activeIfTemplateIs 'MyIgnoranceMap' }}">
+                  <a href="{{pathFor 'myIgnoranceMap'}}">My Ignorance Map</a>
+                </li>                
                 {{#if isInRole 'administrator'}}
                 <li class="{{ activeIfTemplateIs 'ManageUsers' }}">
                   <a href="{{pathFor 'manageUsers'}}">Manage Users</a>

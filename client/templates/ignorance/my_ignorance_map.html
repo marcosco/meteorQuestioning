@@ -1,0 +1,122 @@
+<template name="myIgnoranceMap">
+  <h2>Known Unknowns</h2>
+  {{#if questionsKU.count}}
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsKU}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  No data to display.
+  {{/if}}
+
+  <h2>Unknown Unknowns</h2>
+  {{#if questionsUU.count}}
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsUU}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  No data to display.
+  {{/if}}
+
+  <h2>Errors</h2>
+  {{#if questionsER.count}}
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsER}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  No data to display.
+  {{/if}}
+
+  <h2>Unknown Knowns</h2>
+  {{#if questionsUK.count}}  
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsUK}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  No data to display.
+  {{/if}}
+
+  <h2>Taboos</h2>
+  {{#if questionsTA.count}}    
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsTA}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+  {{else}}
+  No data to display.
+  {{/if}}
+
+  <h2>Denials</h2>
+  {{#if questionsDE.count}}   
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <td>Title</td>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each questionsDE}}
+      <tr>
+        <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table> 
+  {{else}}
+  No data to display.
+  {{/if}}
+   
+</template>

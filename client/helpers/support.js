@@ -7,4 +7,4 @@ UI.registerHelper("distribution", function (a, b) {
     return 0;
   else
     return (100 / b * a);
-})
+});
