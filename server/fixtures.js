@@ -25,6 +25,16 @@ if ( Questions.find().count() === 0 ) {
 
     console.log("loading " + file);
 
+    var ignoranceMap = {
+      knownUnknowns: 0,
+      unknownUnknowns: 0,
+      errors: 0,
+      unknownKnowns: 0,
+      taboos: 0,
+      denials: 0,
+      total: 0
+    };  
+
     for (var i = 0, len = cssQuestions1.items.length; i < len; i++) {
       var cssQuestion = cssQuestions1.items[i];
 
@@ -45,7 +55,8 @@ if ( Questions.find().count() === 0 ) {
         username: adminUser.username,
         is_answered: null,
         publishedAt: new Date().getTime(),
-        publishedBy: adminUser.username     
+        publishedBy: adminUser.username,
+        ignoranceMap: ignoranceMap
       }
 
       question_id = Questions.insert(question);
@@ -71,7 +82,8 @@ if ( Questions.find().count() === 0 ) {
             owner: adminUser._id,
             username: adminUser.username,
             publishedAt: new Date().getTime(),
-            publishedBy: adminUser.username
+            publishedBy: adminUser.username,
+            ignoranceMap: ignoranceMap
           };
 
           answer_id = Answers.insert(answer);

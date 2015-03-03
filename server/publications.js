@@ -23,6 +23,10 @@ Meteor.publish('answers', function() {
   return Answers.find();
 });
 
+Meteor.publish('polls', function() {
+  return Polls.find();
+});
+
 Meteor.publish('users', function() {
   if (Roles.userIsInRole(this.userId, 'administrator')) {
       return Meteor.users.find();

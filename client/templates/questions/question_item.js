@@ -46,7 +46,22 @@ Template.questionItem.helpers({
     } else {
       return "#777";
     }    
-  },    
+  },
+
+  myIgnorance: function() {
+    var poll = {
+      userId: Meteor.userId(),
+      category: "question",
+      itemId: this._id,
+    }
+
+    currentPoll = Polls.findOne(poll);
+
+    if (currentPoll)
+      return currentPoll.classification;      
+    else
+      return false;
+  }    
 });
 
 Template.questionItem.events({
@@ -60,5 +75,77 @@ Template.questionItem.events({
     e.preventDefault();
 
     Meteor.call("incQuestionScore", this._id);
-  }
+  },
+
+  'click .uk': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Unknown Knowns"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  },
+
+  'click .ku': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Known Unknowns"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  },
+
+  'click .uu': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Unknown Unknowns"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  },  
+
+  'click .er': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Errors"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  },
+
+  'click .ta': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Taboos"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  },
+
+  'click .de': function(e) {
+    e.preventDefault();
+
+    var poll = {
+      category: "question",
+      itemId: this._id,
+      classification: "Denials"
+    }
+    
+    Meteor.call("updateIgnorance", poll)
+  }  
 })
