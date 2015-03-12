@@ -1,3 +1,4 @@
 {
-    "sanitize-html" : "1.5.2"
+    "sanitize-html" : "1.5.2",
+    "natural" : "0.2.0"
 }

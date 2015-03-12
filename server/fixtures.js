@@ -17,7 +17,9 @@ if ( Meteor.users.find().count() === 0 ) {
 if ( Questions.find().count() === 0 ) {
 	adminUser = Meteor.users.findOne({"username": "admin"});
 
-  Sanitizer = Meteor.npmRequire('sanitize-html');
+  tokenizer = new Natural.WordTokenizer();
+
+  classifier = new Natural.BayesClassifier();
 
   function loadSeeds(file) {
 
@@ -56,10 +58,13 @@ if ( Questions.find().count() === 0 ) {
         is_answered: null,
         publishedAt: new Date().getTime(),
         publishedBy: adminUser.username,
-        ignoranceMap: ignoranceMap
+        ignoranceMap: ignoranceMap,
+        vector: tokenizer.tokenize(Sanitizer(cssQuestion.title))
       }
 
       question_id = Questions.insert(question);
+
+      classifier.addDocument(Sanitizer(cssQuestion.title), cssQuestion.tags[0]);
 
       if ( cssQuestion.answer_count !== 0 ) {
         var cssAnswers = cssQuestion.answers;
@@ -93,18 +98,23 @@ if ( Questions.find().count() === 0 ) {
           }
         }      
       }
-    }    
+    };
+
   };
 
- loadSeeds("css-q1.json");
- loadSeeds("css-q2.json");
- loadSeeds("css-q3.json");
- loadSeeds("javascript-q1.json");
- loadSeeds("javascript-q2.json");
- loadSeeds("javascript-q3.json");
- loadSeeds("xml-q1.json");
- loadSeeds("xml-q2.json");
- loadSeeds("xml-q3.json");
+  loadSeeds("css-q1.json");
+  loadSeeds("css-q2.json");
+  loadSeeds("css-q3.json");
+  loadSeeds("javascript-q1.json");
+  loadSeeds("javascript-q2.json");
+  loadSeeds("javascript-q3.json");
+  loadSeeds("xml-q1.json");
+  loadSeeds("xml-q2.json");
+  loadSeeds("xml-q3.json");
 
+  classifier.train();
+  classifier.save('classifier.json', function(err, classifier) {
+    // the classifier is saved to the classifier.json file!
+  });
 
 }
