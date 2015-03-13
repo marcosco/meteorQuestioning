@@ -100,7 +100,7 @@ if ( Questions.find().count() === 0 ) {
 
   };
 
-  for (var seed = 1; seed < 231; seed++) {
+  for (var seed = 1; seed < 23; seed++) {
     loadSeeds("seeds/js-" + seed + ".json");
     loadSeeds("seeds/css-" + seed + ".json");
   }
