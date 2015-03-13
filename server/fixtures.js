@@ -23,7 +23,7 @@ if ( Questions.find().count() === 0 ) {
 
   function loadSeeds(file) {
 
-    var cssQuestions1 = JSON.parse(Assets.getText(file));
+    var Questions1 = JSON.parse(Assets.getText(file));
 
     console.log("loading " + file);
 
@@ -37,12 +37,12 @@ if ( Questions.find().count() === 0 ) {
       total: 0
     };  
 
-    for (var i = 0, len = cssQuestions1.items.length; i < len; i++) {
-      var cssQuestion = cssQuestions1.items[i];
+    for (var i = 0, len = Questions1.items.length; i < len; i++) {
+      var Question = Questions1.items[i];
 
       var question = {
-        title: Sanitizer(cssQuestion.title),
-        text: Sanitizer(cssQuestion.body,
+        title: Sanitizer(Question.title),
+        text: Sanitizer(Question.body,
                   { 
                     allowedTags: false,
                     transformTags: {
@@ -50,8 +50,8 @@ if ( Questions.find().count() === 0 ) {
                       'script': 'code'
                     }
                   }),
-        score: cssQuestion.score,
-        tags: cssQuestion.tags,
+        score: Question.score,
+        tags: Question.tags,
         createdAt: new Date().getTime(),
         owner: adminUser._id,
         username: adminUser.username,
@@ -59,21 +59,20 @@ if ( Questions.find().count() === 0 ) {
         publishedAt: new Date().getTime(),
         publishedBy: adminUser.username,
         ignoranceMap: ignoranceMap,
-        vector: tokenizer.tokenize(Sanitizer(cssQuestion.title))
       }
 
       question_id = Questions.insert(question);
 
-      classifier.addDocument(Sanitizer(cssQuestion.title), cssQuestion.tags[0]);
+      classifier.addDocument(Sanitizer(Question.title), Question.tags[0]);
 
-      if ( cssQuestion.answer_count !== 0 ) {
-        var cssAnswers = cssQuestion.answers;
-        for (var k = 0, alen = cssAnswers.length; k < alen; k++) {
-          var cssAnswer = cssAnswers[k];
+      if ( Question.answer_count !== 0 ) {
+        var Answers1 = Question.answers;
+        for (var k = 0, alen = Answers1.length; k < alen; k++) {
+          var Answer = Answers1[k];
 
           var answer =  {
             question_id: question_id,
-            text: Sanitizer(cssAnswer.body, 
+            text: Sanitizer(Answer.body, 
                   {
                     allowedTags: false,
                     transformTags: {
@@ -81,19 +80,18 @@ if ( Questions.find().count() === 0 ) {
                       'script': 'code'
                     }
                   }),
-            score: cssAnswer.score,
-            is_accepted: cssAnswer.is_accepted,
+            score: Answer.score,
+            is_accepted: Answer.is_accepted,
             createdAt: new Date().getTime(),
             owner: adminUser._id,
             username: adminUser.username,
             publishedAt: new Date().getTime(),
             publishedBy: adminUser.username,
-            ignoranceMap: ignoranceMap
           };
 
           answer_id = Answers.insert(answer);
 
-          if ( cssAnswer.is_accepted ) {
+          if ( Answer.is_accepted ) {
             Questions.update( { _id: question_id }, { $set: { is_answered: answer_id } } );
           }
         }      
@@ -102,15 +100,11 @@ if ( Questions.find().count() === 0 ) {
 
   };
 
-  loadSeeds("css-q1.json");
-  loadSeeds("css-q2.json");
-  loadSeeds("css-q3.json");
-  loadSeeds("javascript-q1.json");
-  loadSeeds("javascript-q2.json");
-  loadSeeds("javascript-q3.json");
-  loadSeeds("xml-q1.json");
-  loadSeeds("xml-q2.json");
-  loadSeeds("xml-q3.json");
+  for (var seed = 1; seed < 231; seed++) {
+    loadSeeds("seeds/js-" + seed + ".json");
+    loadSeeds("seeds/css-" + seed + ".json");
+  }
+
 
   classifier.train();
   classifier.save('classifier.json', function(err, classifier) {
