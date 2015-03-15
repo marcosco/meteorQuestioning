@@ -276,7 +276,10 @@ Meteor.methods({
   },
 
   classify: function(input) {
-    Natural.BayesClassifier.load('classifier.json', null, function(err, classifier) {
+    Natural.BayesClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
+      if (err) {
+        return console.log(err);
+      }
       console.log("inside 1");
       console.log(classifier.classify(input));
       console.log("inside 2");

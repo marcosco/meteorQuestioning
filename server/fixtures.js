@@ -1,3 +1,4 @@
+
 if ( Meteor.users.find().count() === 0 ) {
   adminId = Accounts.createUser({
     username: 'admin',
@@ -18,9 +19,8 @@ if ( Questions.find().count() === 0 ) {
 	adminUser = Meteor.users.findOne({"username": "admin"});
 
   tokenizer = new Natural.WordTokenizer();
-
   classifier = new Natural.BayesClassifier();
-
+  
   function loadSeeds(file) {
 
     var Questions1 = JSON.parse(Assets.getText(file));
@@ -105,10 +105,9 @@ if ( Questions.find().count() === 0 ) {
     loadSeeds("seeds/css-" + seed + ".json");
   }
 
-
   classifier.train();
   classifier.save('classifier.json', function(err, classifier) {
     // the classifier is saved to the classifier.json file!
   });
-
 }
+
