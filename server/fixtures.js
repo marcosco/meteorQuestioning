@@ -63,7 +63,19 @@ if ( Questions.find().count() === 0 ) {
 
       question_id = Questions.insert(question);
 
-      classifier.addDocument(Sanitizer(Question.title), Question.tags[0]);
+      try {
+        extractedTags = Tags.findFrom(Question.title);
+
+        for (var tt = 0, ttlen = Question.tags.length; tt < ttlen; tt++) {
+          classifier.addDocument(extractedTags.join(), Question.tags[tt]);        
+        }
+
+//        classifier.addDocument(extractedTags.join(), Question.tags[0]);
+      }
+      catch(err) {
+        console.log(err);
+        console.log("This text cause the error: " + Question.title);
+      }
 
       if ( Question.answer_count !== 0 ) {
         var Answers1 = Question.answers;
@@ -100,13 +112,13 @@ if ( Questions.find().count() === 0 ) {
 
   };
 
-  for (var seed = 1; seed < 23; seed++) {
+  for (var seed = 1; seed < 2; seed++) {
     loadSeeds("seeds/js-" + seed + ".json");
     loadSeeds("seeds/css-" + seed + ".json");
   }
 
   classifier.train();
-  classifier.save('classifier.json', function(err, classifier) {
+  classifier.save('assets/app/classifier.json', function(err, classifier) {
     // the classifier is saved to the classifier.json file!
   });
 }

@@ -34,7 +34,7 @@ Meteor.methods({
       publishedBy: null,
       ignoranceMap: ignoranceMap
     });
-
+    // TODO NON FUNZIONA
     questionId = Questions.insert(question);
 
     return questionId;
@@ -276,16 +276,22 @@ Meteor.methods({
   },
 
   classify: function(input) {
+    Future = Npm.require('fibers/future');
+
+    var fut = new Future();
     Natural.BayesClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
-      if (err) {
-        return console.log(err);
-      }
-      console.log("inside 1");
-      console.log(classifier.classify(input));
-      console.log("inside 2");
-      console.log(classifier.getClassifications(input));
-    });
-    console.log("outside");
+        if (err) {
+          return console.log(err);
+        }
+
+        classification = classifier.classify(input);
+        console.log(input + ' has been classified as ' + classification);
+        fut.return(classification);
+      });
+
+    classification = fut.wait();
+    console.log('returing ' + classification);
+    return classification;
   }
 
 });

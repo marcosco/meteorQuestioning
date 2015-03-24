@@ -2,6 +2,7 @@ accounts-base@1.1.3
 accounts-password@1.0.5
 accounts-ui-bootstrap-3@0.0.0
 alanning:roles@1.2.13
+anonyfox:tags@0.0.13
 application-configuration@1.0.4
 assert@0.0.0
 autoupdate@1.1.4
@@ -14,6 +15,7 @@ boilerplate-generator@1.0.2
 bootstrap-3@0.0.0
 callback-hook@1.0.2
 check@1.0.3
+coffeescript@1.0.5
 ddp@1.0.13
 deps@1.0.6
 ejson@1.0.5

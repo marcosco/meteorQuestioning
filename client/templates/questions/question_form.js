@@ -3,10 +3,16 @@ Template.questionForm.events({
     e.preventDefault();
 
     var question = {
-      title: $(e.target).find('[name=questionTitleModal]').val(),
-      text: $(e.target).find('[name=questionTextModal]').val(),
-      tags: $(e.target).find('[name=questionTagsModal]').val()
+      title: $("#questionTitleModal").val(),
+      text: $("#questionTextModal").val(),
+      tags: $("#questionTagsModal").val()
     }
+    // Clear form
+    $("#questionTitleModal").val('');
+    CKEDITOR.instances['questionTextModal'].setData('');
+    $("#questionTagsModal").val('');
+
+    $('#questionModal').modal('hide');
     Meteor.call("addQuestion", question, function(error, id) {
       if (error)
         return alert(error.reason);
@@ -14,11 +20,14 @@ Template.questionForm.events({
       Router.go('questionPage', {_id: id});
     });
 
-    // Clear form
-    e.target.questionTextModal.value = "";
-    e.target.questionTitleModal.value = "";
+  },
 
-    $('#questionModal').modal('hide');
+  "change": function (e) {
+    e.preventDefault();
+    console.log($("#questionTitleModal").val());
+
+    Meteor.call('classify', $("#questionTitleModal").val(), function (error, result) {
+     $("#questionTagsModal").val(result); });
   }
 });
 
