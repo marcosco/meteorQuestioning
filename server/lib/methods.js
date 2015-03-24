@@ -284,14 +284,10 @@ Meteor.methods({
           return console.log(err);
         }
 
-        classification = classifier.classify(input);
-        console.log(input + ' has been classified as ' + classification);
-        fut.return(classification);
+        return fut.return(classifier.classify(input));
       });
 
-    classification = fut.wait();
-    console.log('returing ' + classification);
-    return classification;
+    return fut.wait();
   }
 
 });
