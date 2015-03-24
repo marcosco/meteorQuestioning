@@ -17,10 +17,16 @@ Meteor.publish(null, function (){
 Meteor.publish('questions', function(limit) {
   if (Roles.userIsInRole(this.userId, ['publisher','administrator'])) {
       return Questions.find({}, { 
+                sort: {
+                  createdAt: -1
+                },
                 limit: limit });
     }
-
-  return Questions.find( {  publishedAt: {$ne: null} }, { limit: limit });
+  return Questions.find( { $or: [{ publishedAt: {$ne: null} }, { owner: this.userId}] }, { 
+                sort: {
+                  createdAt: -1
+                },
+                limit: limit });
 });
 
 Meteor.publish('answers', function() {
