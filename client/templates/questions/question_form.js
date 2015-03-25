@@ -22,7 +22,7 @@ Template.questionForm.events({
 
   },
 
-  "change": function (e) {
+  "change #questionTitleModal": function (e) {
     e.preventDefault();
     console.log($("#questionTitleModal").val());
 

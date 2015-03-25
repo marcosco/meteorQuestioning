@@ -34,8 +34,41 @@ Meteor.methods({
       publishedBy: null,
       ignoranceMap: ignoranceMap
     });
-    // TODO NON FUNZIONA
+
     questionId = Questions.insert(question);
+
+    console.log(Meteor.settings.autoUpdate);
+    if (Meteor.settings.autoUpdate) {
+      console.log("Classifier autoUpdate is on.");
+      Natural.LogisticRegressionClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
+        if (err) {
+          return console.log(err);
+        }
+
+        try {
+          extractedTags = Tags.findFrom(question.title);
+
+          for (var tt = 0, ttlen = question.tags.length; tt < ttlen; tt++) {
+            classifier.addDocument(extractedTags.join(), question.tags[tt]);        
+          }
+          classifier.train();
+          classifier.save('assets/app/classifier.json', function(err, classifier) {
+            // the classifier is saved to the classifier.json file!
+            if (err) {
+              return console.log(err);
+            }
+
+          });
+      //        classifier.addDocument(extractedTags.join(), Question.tags[0]);
+        }
+        catch(err) {
+          console.log(err);
+          console.log("This text cause the error: " + question.title);
+        }
+      });      
+    }
+
+
 
     return questionId;
   },
@@ -277,17 +310,31 @@ Meteor.methods({
 
   classify: function(input) {
     Future = Npm.require('fibers/future');
-
+    console.log(input);
     var fut = new Future();
-    Natural.BayesClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
-        if (err) {
-          return console.log(err);
-        }
 
-        return fut.return(classifier.classify(input));
-      });
+    try {
+        Natural.LogisticRegressionClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
+            if (err) {
+              return console.log(err);
+            }
 
-    return fut.wait();
-  }
+            if (classifier) {
+              classy = classifier.classify(input);
+              console.log(classifier.getClassifications(input));
+              return fut.return(classy);
+            }
+
+            return fut.return();
+          });
+
+        return fut.wait();
+    }
+    catch(err) {
+      console.log(err);
+      console.log("This text cause the error: " + Question.title);
+    }
+
+  } 
 
 });
