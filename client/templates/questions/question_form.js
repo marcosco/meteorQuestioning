@@ -27,7 +27,7 @@ Template.questionForm.events({
     console.log($("#questionTitleModal").val());
 
     Meteor.call('classify', $("#questionTitleModal").val(), function (error, result) {
-     $("#questionTagsModal").val(result); });
+     $("#questionTagsModal").val(result.join()); });
   }
 });
 

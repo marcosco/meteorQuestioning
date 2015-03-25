@@ -319,10 +319,37 @@ Meteor.methods({
               return console.log(err);
             }
 
+            prevValue = 1;
+            prevDistance = 1;
+
             if (classifier) {
-              classy = classifier.classify(input);
-              console.log(classifier.getClassifications(input));
-              return fut.return(classy);
+              allClass = classifier.getClassifications(input);
+
+              suggestions = [];
+
+              for (var i=0; i < allClass.length; i++) {
+                label = allClass[i]['label'];
+                value = allClass[i]['value'];
+                if (value < 0.5 )
+                  break;
+
+                distance = prevValue - value;
+                console.log("distance " + distance);
+                if (distance > prevDistance)
+                  break;
+
+                prevDistance = distance;
+                prevValue = value;
+
+                console.log("distance " + distance);
+                console.log("label " + label);
+                console.log("value " + value);
+
+                suggestions.push(label);
+              }
+
+              console.log(allClass);
+              return fut.return(suggestions);
             }
 
             return fut.return();
