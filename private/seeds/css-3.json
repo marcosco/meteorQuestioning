@@ -163,7 +163,7 @@
             "title": "Is there a CSS parent selector?"
         },
         {
-            "answer_count": 13,
+            "answer_count": 14,
             "answers": [
                 {
                     "body": "<p>Try adding <code>float:left;</code> <a href=\"http://jsfiddle.net/dGHFV/3/\" rel=\"nofollow\">http://jsfiddle.net/dGHFV/3/</a></p>\n",
@@ -181,7 +181,7 @@
                         "display_name": "thirtydot",
                         "user_id": 405015
                     },
-                    "score": 301
+                    "score": 302
                 },
                 {
                     "body": "<p>For CSS3 conforming browsers there is <code>white-space-collapsing:discard</code> </p>\n\n<p>see: <a href=\"http://www.w3.org/TR/2010/WD-css3-text-20101005/#white-space-collapsing\">http://www.w3.org/TR/2010/WD-css3-text-20101005/#white-space-collapsing</a></p>\n",
@@ -281,10 +281,19 @@
                         "user_id": 165673
                     },
                     "score": 2
+                },
+                {
+                    "body": "<p>Fixing the issue by assigning the font to the container that does not have a whitespace. </p>\n\n<p><a href=\"http://www.uipress.com/how-to-remove-the-whitespace-between-displayinline-block-elements/\" rel=\"nofollow\">http://www.uipress.com/how-to-remove-the-whitespace-between-displayinline-block-elements/</a></p>\n",
+                    "is_accepted": false,
+                    "owner": {
+                        "display_name": "Bilal Niaz Awan",
+                        "user_id": 1050236
+                    },
+                    "score": 0
                 }
             ],
             "body": "<p>Given this HTML: </p>\n\n<pre><code>&lt;p&gt;\n    &lt;span&gt; Foo &lt;/span&gt;\n    &lt;span&gt; Bar &lt;/span&gt;\n&lt;/p&gt;\n</code></pre>\n\n<p>and this CSS:</p>\n\n<pre><code>span { \n    display:inline-block;\n    width:100px;\n}\n</code></pre>\n\n<p>as a result, there will be a 4px wide space between the SPAN elements.<br>\n<strong>Demo:</strong> <a href=\"http://jsfiddle.net/dGHFV/\">http://jsfiddle.net/dGHFV/</a>  </p>\n\n<p>I understand why this happens, and I also know that I could get rid of that space by removing the white-space between the SPAN elements in the HTML source code, like so: </p>\n\n<pre><code>&lt;p&gt;\n    &lt;span&gt; Foo &lt;/span&gt;&lt;span&gt; Bar &lt;/span&gt;\n&lt;/p&gt;\n</code></pre>\n\n<p>However, I was hoping for a CSS solution that doesn't require the HTML source code to be tampered with.</p>\n\n<p>I know how to solve this with JavaScript - by removing the Text nodes from the container element (the paragraph), like so: </p>\n\n<pre><code>// jQuery\n$('p').contents().filter(function() { return this.nodeType === 3; }).remove();\n</code></pre>\n\n<p><strong>Demo:</strong> <a href=\"http://jsfiddle.net/dGHFV/1/\">http://jsfiddle.net/dGHFV/1/</a> </p>\n\n<p>But can this issue be solved with CSS alone?</p>\n",
-            "last_activity_date": 1426201553,
+            "last_activity_date": 1427354685,
             "owner": {
                 "display_name": "\u0160ime Vidas",
                 "user_id": 425275
@@ -1104,7 +1113,7 @@
                         "display_name": "Peter Boughton",
                         "user_id": 9360
                     },
-                    "score": 1631
+                    "score": 1632
                 },
                 {
                     "body": "<p>The line</p>\n\n<pre><code>document.getElementById(\"MyElement\").className = document.getElementById(\"MyElement\").className.replace(/\\bMyClass\\b/','')\n</code></pre>\n\n<p>should be:</p>\n\n<pre><code>document.getElementById(\"MyElement\").className = document.getElementById(\"MyElement\").className.replace('/\\bMyClass\\b/','');\n</code></pre>\n",
@@ -1249,7 +1258,7 @@
                 "user_id": 4998
             },
             "question_id": 195951,
-            "score": 1018,
+            "score": 1019,
             "tags": [
                 "javascript",
                 "css",
