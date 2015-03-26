@@ -72,5 +72,14 @@ Template.manageUsers.events({
     // increase limit by 5 and update it
     limit += 5;
     instance.limit.set(limit);
-  }    
+  },
+  'click .impersonate': function() {
+    var userId = this._id;
+    Meteor.call('impersonate', userId, function(err) {
+      if (!err) {
+        Meteor.connection.setUserId(userId);
+        Router.go('/');
+      }
+    });
+  }  
 });

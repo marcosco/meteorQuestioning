@@ -383,6 +383,18 @@ Meteor.methods({
       logger.debug("This text cause the error: " + Question.title);
     }
 
-  } 
+  },
+
+  impersonate: function(userId) {
+    check(userId, String);
+
+    if (!Meteor.users.findOne(userId))
+      throw new Meteor.Error(404, 'User not found');
+    if (!Roles.userIsInRole(Meteor.user(), ['administrator']))
+      throw new Meteor.Error(403, 'Permission denied');
+
+    logger.info("impersonating " + userId);
+    this.setUserId(userId);
+  }  
 
 });

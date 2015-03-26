@@ -29,7 +29,7 @@
 <template name="userRow">
   <td>{{this.profile.first_name}}</td>
   <td>{{this.profile.last_name}}</td>  
-  <td>{{this.username}}</td>
+  <td><a href="#" class="impersonate">{{this.username}}</a></td>
   <td>
     <label class="toggle-publisher">
       <input class="checkbox" type="checkbox" {{checkPublisher this._id}} />
