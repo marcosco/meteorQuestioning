@@ -1,4 +1,5 @@
 {
   "autoUpdate" : false,
-  "logLevel" : "debug"
+  "globalLogLevel" : "debug",
+  "papertrayLogLevel" : "debug"
 }

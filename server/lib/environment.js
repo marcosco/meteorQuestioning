@@ -12,9 +12,9 @@ logger.add(Papertrail, {
       return '[' + level + '] ' + message;
   },
   inlineMeta: true,
-  level: "info"
+  level: Meteor.settings.paertrayLogLevel
 });
 
-logger.level = Meteor.settings.logLevel;
+logger.level = Meteor.settings.globalLogLevel;
 
 logger.info('Logger started');

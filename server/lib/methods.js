@@ -35,7 +35,13 @@ Meteor.methods({
       ignoranceMap: ignoranceMap
     });
 
-    questionId = Questions.insert(question);
+    try {
+      questionId = Questions.insert(question);
+      logger.debug("Question " + questionId + " added");      
+    }
+    catch(err) {
+      logger.error(err);
+    }
 
     if (Meteor.settings.autoUpdate) {
       logger.debug("Classifier autoUpdate is on.");
@@ -107,7 +113,13 @@ Meteor.methods({
       ignoranceMap: ignoranceMap
     });
 
-    answerId = Answers.insert(answer);
+    try {
+      answerId = Answers.insert(answer);
+      logger.debug("Answer " + answerId + " added");      
+    }
+    catch(err) {
+      logger.error(err);
+    }
 
     return answerId;
   },
@@ -119,6 +131,7 @@ Meteor.methods({
     }
 
     Questions.remove(id);
+    logger.debug("Question " + id + " has been removed.");      
   },
 
   updateQuestion: function (questionAttr) {
@@ -141,7 +154,13 @@ Meteor.methods({
     var currentQuestionId = questionAttr.id;
     var questionTags = questionAttr.tags.split(',');
 
-    Questions.update(currentQuestionId, {$set: {title: questionTitle, text: questionText, tags: questionTags}});
+    try {
+      Questions.update(currentQuestionId, {$set: {title: questionTitle, text: questionText, tags: questionTags}});
+      logger.debug("Question " + currentQuestionId + " has been updated.");      
+    }
+    catch(err) {
+      logger.error(err);
+    }
 
     return currentQuestionId;
   },
@@ -156,9 +175,11 @@ Meteor.methods({
     var publishedBy = Meteor.user().username;
 
     if (question.publishedAt) {
-      Questions.update(question._id, {$set: {publishedAt: null, publishedBy: null}});      
+      Questions.update(question._id, {$set: {publishedAt: null, publishedBy: null}});
+      logger.debug("Question " + question._id + "is now unpublished");      
     } else {
       Questions.update(question._id, {$set: {publishedAt: publishedAt, publishedBy: publishedBy}});      
+      logger.debug("Question " + question._id + "is now published");      
     }
   },
 
@@ -195,6 +216,7 @@ Meteor.methods({
 
     Answers.update( { _id: answer._id }, {$set: { is_accepted: true }} );
     Questions.update( { _id: question._id }, {$set: { is_answered: answer._id }} );
+    logger.debug("Answer " + answer.id + " has been set has accepted answer for question " + question.id);
   },
 
   decQuestionScore: function(id) {
@@ -203,6 +225,7 @@ Meteor.methods({
     }
 
     Questions.update( { _id: id }, {$inc: { score: -1 }} );
+    logger.debug("Question " + id + " has decrasing score.")
   },
 
   incQuestionScore: function(id) {
@@ -211,6 +234,7 @@ Meteor.methods({
     }
 
     Questions.update( { _id: id }, {$inc: { score: 1 }} );
+    logger.debug("Question " + id + " has incrasing score.")
   },
 
   decAnswerScore: function(id) {
@@ -219,6 +243,7 @@ Meteor.methods({
     }
 
     Answers.update( { _id: id }, {$inc: { score: -1 }} );
+    logger.debug("Answer " + id + " has decrasing score.")
   },
 
   incAnswerScore: function(id) {
@@ -227,6 +252,7 @@ Meteor.methods({
     }
 
     Answers.update( { _id: id }, {$inc: { score: 1 }} );
+    logger.debug("Answer " + id + " has incrasing score.")
   },
 
   updateIgnorance: function (ignoranceAttr) {
@@ -344,7 +370,6 @@ Meteor.methods({
                 suggestions.push(label);
               }
 
-              logger.debug(allClass);
               return fut.return(suggestions);
             }
 
