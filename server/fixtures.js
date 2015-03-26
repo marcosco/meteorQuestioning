@@ -1,18 +1,53 @@
 Meteor.startup(function () {
-  if ( Meteor.users.find().count() === 0 ) {
-    adminId = Accounts.createUser({
-      username: 'admin',
-      emails: {
-        address: 'admin@email.local',
-      },
-      password: 'password',
-      profile: {
-        first_name: 'Admin',
-        last_name: 'User',
-      }
-    });
 
-    Roles.addUsersToRoles(adminId, ['administrator', 'publisher']);
+  function findOrCreateUser(name, admin) {
+    if (typeof(name)==='undefined') name = "John Doe";
+    if (typeof(admin)==='undefined') admin = false;
+    details = name.split(' ');
+
+    firstName = details[0];
+
+    if (details.length == 1) {
+      lastName = "Doe";
+    } else {
+      lastName = details[1];
+    }
+
+    username = firstName.concat(lastName);
+    email = username + "@email.local";
+
+    user = Meteor.users.findOne({username: username});
+    if (typeof(user)==='undefined') {
+      userId = Accounts.createUser({
+        username: username,
+        emails: {
+          address: email,
+        },
+        password: 'password',
+        profile: {
+          first_name: firstName,
+          last_name: lastName,
+        }
+      });
+
+      if ( admin ) {
+        Roles.addUsersToRoles(userId, ['administrator', 'publisher']);
+      }
+
+      logger.debug("User " + username + " not found and created as id " + userId);
+
+      user = Meteor.users.findOne({_id: userId});
+
+      return user;      
+    }
+
+    logger.debug("User " + username + " found as id " + user._id);
+
+    return user;
+  }
+
+  if ( Meteor.users.find().count() === 0 ) {
+      findOrCreateUser("adm in", true);
   }
 
   if ( Questions.find().count() === 0 ) {
@@ -40,6 +75,8 @@ Meteor.startup(function () {
       for (var i = 0, len = Questions1.items.length; i < len; i++) {
         var Question = Questions1.items[i];
 
+        owner = findOrCreateUser(Question.owner.display_name);
+
         var question = {
           title: Sanitizer(Question.title),
           text: Sanitizer(Question.body,
@@ -53,11 +90,11 @@ Meteor.startup(function () {
           score: Question.score,
           tags: Question.tags,
           createdAt: new Date().getTime(),
-          owner: adminUser._id,
-          username: adminUser.username,
+          owner: owner._id,
+          username: owner.username,
           is_answered: null,
           publishedAt: new Date().getTime(),
-          publishedBy: adminUser.username,
+          publishedBy: owner.username,
           ignoranceMap: ignoranceMap,
         }
 
@@ -82,6 +119,8 @@ Meteor.startup(function () {
           for (var k = 0, alen = Answers1.length; k < alen; k++) {
             var Answer = Answers1[k];
 
+            owner = findOrCreateUser(Answer.owner.display_name);
+
             var answer =  {
               question_id: question_id,
               text: Sanitizer(Answer.body, 
@@ -95,10 +134,10 @@ Meteor.startup(function () {
               score: Answer.score,
               is_accepted: Answer.is_accepted,
               createdAt: new Date().getTime(),
-              owner: adminUser._id,
-              username: adminUser.username,
+              owner: owner._id,
+              username: owner.username,
               publishedAt: new Date().getTime(),
-              publishedBy: adminUser.username,
+              publishedBy: owner.username,
             };
 
             answer_id = Answers.insert(answer);
