@@ -37,12 +37,11 @@ Meteor.methods({
 
     questionId = Questions.insert(question);
 
-    console.log(Meteor.settings.autoUpdate);
     if (Meteor.settings.autoUpdate) {
-      console.log("Classifier autoUpdate is on.");
+      logger.debug("Classifier autoUpdate is on.");
       Natural.LogisticRegressionClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
         if (err) {
-          return console.log(err);
+          return logger.error(err);
         }
 
         try {
@@ -55,15 +54,15 @@ Meteor.methods({
           classifier.save('assets/app/classifier.json', function(err, classifier) {
             // the classifier is saved to the classifier.json file!
             if (err) {
-              return console.log(err);
+              return logger.error(err);
             }
 
           });
       //        classifier.addDocument(extractedTags.join(), Question.tags[0]);
         }
         catch(err) {
-          console.log(err);
-          console.log("This text cause the error: " + question.title);
+          logger.error(err);
+          logger.error("This text cause the error: " + question.title);
         }
       });      
     }
@@ -170,10 +169,10 @@ Meteor.methods({
 
     if (! Roles.userIsInRole(_id, 'publisher')) {
       Roles.addUsersToRoles(_id, 'publisher');
-      console.log("adding " + _id);
+      logger.debug("adding " + _id + " to publisher");
     } else {
       Roles.setUserRoles(_id, []);      
-      console.log("removing " +_id);
+      logger.debug("removing " +_id + " from publisher");
     }
   },
 
@@ -183,7 +182,7 @@ Meteor.methods({
     }
 
     user = Meteor.users.update( { _id: Meteor.userId() }, { $set: profile} );
-    console.log(profile);
+    logger.debug(profile + "updated!");
   },
 
   setAccepted: function(id) {
@@ -310,13 +309,13 @@ Meteor.methods({
 
   classify: function(input) {
     Future = Npm.require('fibers/future');
-    console.log(input);
+    logger.debug("Classifying " + input);
     var fut = new Future();
 
     try {
         Natural.LogisticRegressionClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
             if (err) {
-              return console.log(err);
+              return logger.error(err);
             }
 
             prevValue = 1;
@@ -330,25 +329,22 @@ Meteor.methods({
               for (var i=0; i < allClass.length; i++) {
                 label = allClass[i]['label'];
                 value = allClass[i]['value'];
-                if (value < 0.5 )
+                if (value <= 0.5 )
                   break;
 
                 distance = prevValue - value;
-                console.log("distance " + distance);
                 if (distance > prevDistance)
                   break;
 
                 prevDistance = distance;
                 prevValue = value;
 
-                console.log("distance " + distance);
-                console.log("label " + label);
-                console.log("value " + value);
+                logger.debug("label " + label + " has value " + value + " and distance " + distance);
 
                 suggestions.push(label);
               }
 
-              console.log(allClass);
+              logger.debug(allClass);
               return fut.return(suggestions);
             }
 
@@ -358,8 +354,8 @@ Meteor.methods({
         return fut.wait();
     }
     catch(err) {
-      console.log(err);
-      console.log("This text cause the error: " + Question.title);
+      logger.error(err);
+      logger.debug("This text cause the error: " + Question.title);
     }
 
   } 

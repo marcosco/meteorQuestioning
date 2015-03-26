@@ -25,7 +25,7 @@ Meteor.startup(function () {
 
       var Questions1 = JSON.parse(Assets.getText(file));
 
-      console.log("loading " + file);
+      logger.info("loading " + file);
 
       var ignoranceMap = {
         knownUnknowns: 0,
@@ -73,8 +73,8 @@ Meteor.startup(function () {
   //        classifier.addDocument(extractedTags.join(), Question.tags[0]);
         }
         catch(err) {
-          console.log(err);
-          console.log("This text cause the error: " + Question.title);
+          logger.error(err);
+          logger.error("This text cause the error: " + Question.title);
         }
 
         if ( Question.answer_count !== 0 ) {
