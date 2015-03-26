@@ -8,3 +8,11 @@ UI.registerHelper("distribution", function (a, b) {
   else
     return (100 / b * a);
 });
+
+UI.registerHelper("avoidQuestionUpdate", function () {
+    return Meteor.settings.public.avoidQuestionUpdate;
+});
+
+UI.registerHelper("avoidQuestionRemove", function () {
+    return Meteor.settings.public.avoidQuestionRemove;
+});

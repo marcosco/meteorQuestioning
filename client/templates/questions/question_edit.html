@@ -23,7 +23,9 @@
     <div class="control-group">
         <div class="controls">
             <input type="submit" value="Save Changes" class="btn btn-primary submit"/>
+            {{#unless avoidQuestionRemove }}
             <button type="button" class="btn btn-danger remove">Delete Question</button>
+            {{/unless}}
         </div>
     </div>
   </form>

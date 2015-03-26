@@ -3,6 +3,9 @@
   "globalLogLevel" : "debug",
   "papertrayLogLevel" : "debug",
   "public" : {
-    "pageSize": 10
-  }
+    "pageSize": 10,
+    "avoidQuestionRemove": true,
+    "avoidQuestionUpdate": false
+  },
+  "publishedByDefault" : true
 }

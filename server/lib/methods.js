@@ -23,17 +23,31 @@ Meteor.methods({
       total: 0
     };  
 
-    var question = _.extend(_.pick(questionAttr, 'title', 'text'), {
-      createdAt: new Date().getTime(),
-      owner: Meteor.userId(),
-      username: Meteor.user().username,
-      is_answered: null,
-      score: 0,
-      tags: questionAttr.tags.split(','),
-      publishedAt: null,
-      publishedBy: null,
-      ignoranceMap: ignoranceMap
-    });
+    if (Meteor.settings.publishedByDefault) {
+      var question = _.extend(_.pick(questionAttr, 'title', 'text'), {
+        createdAt: new Date().getTime(),
+        owner: Meteor.userId(),
+        username: Meteor.user().username,
+        is_answered: null,
+        score: 0,
+        tags: questionAttr.tags.split(','),
+        publishedAt: new Date().getTime(),
+        publishedBy: Meteor.user().username,
+        ignoranceMap: ignoranceMap
+      });      
+    } else {
+      var question = _.extend(_.pick(questionAttr, 'title', 'text'), {
+        createdAt: new Date().getTime(),
+        owner: Meteor.userId(),
+        username: Meteor.user().username,
+        is_answered: null,
+        score: 0,
+        tags: questionAttr.tags.split(','),
+        publishedAt: null,
+        publishedBy: null,
+        ignoranceMap: ignoranceMap
+      });      
+    }
 
     try {
       questionId = Questions.insert(question);
@@ -72,8 +86,6 @@ Meteor.methods({
         }
       });      
     }
-
-
 
     return questionId;
   },
@@ -125,6 +137,11 @@ Meteor.methods({
   },
 
   removeQuestion: function(id) {
+
+    if (Meteor.settings.public.avoidQuestionRemove) {
+      throw new Meteor.Error(401, "Administrately not authorized!");
+    }
+
     question = Questions.findOne(id);
     if (!Roles.userIsInRole(Meteor.user(), ['administrator']) && Meteor.userId() != question.owner) {
       throw new Meteor.Error("not-authorized");      
@@ -136,6 +153,9 @@ Meteor.methods({
 
   updateQuestion: function (questionAttr) {
 
+    if (Meteor.settings.public.avoidQuestionUpdate) {
+      throw new Meteor.Error(401, "Administrately not authorized!");
+    }
     // Make sure the user is logged in before inserting a task
     if (! Meteor.userId()) {
       throw new Meteor.Error(401, "You are not authorized!");

@@ -46,7 +46,9 @@
         {{/if}}
       {{/if}}
     </div>
+    {{#unless avoidQuestionUpdate }}
     {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
+    {{/unless}}
 
   </div>
 </template>
