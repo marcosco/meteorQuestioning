@@ -1,5 +1,8 @@
 {
   "autoUpdate" : false,
   "globalLogLevel" : "debug",
-  "papertrayLogLevel" : "debug"
+  "papertrayLogLevel" : "debug",
+  "public" : {
+    "pageSize": 10
+  }
 }

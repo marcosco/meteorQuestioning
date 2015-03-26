@@ -6,7 +6,7 @@ Template.questionsUnpublishedList.created = function () {
 
   // initialize the reactive variables
   instance.loaded = new ReactiveVar(0);
-  instance.limit = new ReactiveVar(5);
+  instance.limit = new ReactiveVar(Meteor.settings.public.pageSize);
   instance.ready = new ReactiveVar(false);
 
   // 2. Autorun
@@ -17,19 +17,15 @@ Template.questionsUnpublishedList.created = function () {
     // get the limit
     var limit = instance.limit.get();
 
-    console.log("Asking for "+limit+" questions...")
-
     // subscribe to the posts publication
     var subscription = Meteor.subscribe('questions', limit);
 
     // if subscription is ready, set limit to newLimit
     if (subscription.ready()) {
-      console.log("> Received "+limit+" questions. \n\n")
       instance.loaded.set(limit);
       instance.ready.set(true);
     } else {
       instance.ready.set(false);
-      console.log("> Subscription is not ready yet. \n\n");
     }
   });
 

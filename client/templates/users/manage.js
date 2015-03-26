@@ -6,7 +6,7 @@ Template.manageUsers.created = function () {
 
   // initialize the reactive variables
   instance.loaded = new ReactiveVar(0);
-  instance.limit = new ReactiveVar(5);
+  instance.limit = new ReactiveVar(Meteor.settings.public.pageSize);
   instance.ready = new ReactiveVar(false);
 
   // 2. Autorun
@@ -17,19 +17,15 @@ Template.manageUsers.created = function () {
     // get the limit
     var limit = instance.limit.get();
 
-    console.log("Asking for "+limit+" users...")
-
     // subscribe to the posts publication
     var subscription = Meteor.subscribe('users', limit);
 
     // if subscription is ready, set limit to newLimit
     if (subscription.ready()) {
-      console.log("> Received "+limit+" users. \n\n")
       instance.loaded.set(limit);
       instance.ready.set(true);
     } else {
       instance.ready.set(false);
-      console.log("> Subscription is not ready yet. \n\n");
     }
   });
 
@@ -65,7 +61,6 @@ Template.userRow.checkPublisher = function (_id) {
 
 Template.manageUsers.events({
   "change .toggle-publisher input": function (event) {
-    console.log("toggling" + this._id);
     Meteor.call('togglePublisher', this._id);
   },
   'click .load-more': function (event, instance) {
