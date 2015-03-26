@@ -9,9 +9,11 @@
       {{> questionItem}}
     {{/each}}
   </div>
-  {{#if moreResults}}
-    <div id="showMoreResults" style="margin-left: 25px;">
-      <span class="loading">Loading...</span>
-    </div>
-  {{/if}}  
+  {{#if isReady}}
+    {{#if hasMoreQuestions}}
+      <a class="load-more" href="#">Load More</a>
+    {{/if}}
+  {{else}}
+    <div class="loading">{{>spinner}}</div>
+  {{/if}}
 </template>

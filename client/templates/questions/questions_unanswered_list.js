@@ -1,34 +1,68 @@
+Template.questionsUnansweredList.created = function () {
+
+  // 1. Initialization
+
+  var instance = this;
+
+  // initialize the reactive variables
+  instance.loaded = new ReactiveVar(0);
+  instance.limit = new ReactiveVar(5);
+  instance.ready = new ReactiveVar(false);
+
+  // 2. Autorun
+
+  // will re-run when the "limit" reactive variables changes
+  instance.autorun(function () {
+
+    // get the limit
+    var limit = instance.limit.get();
+
+    console.log("Asking for "+limit+" questions...")
+
+    // subscribe to the posts publication
+    var subscription = Meteor.subscribe('questions', limit);
+
+    // if subscription is ready, set limit to newLimit
+    if (subscription.ready()) {
+      console.log("> Received "+limit+" questions. \n\n")
+      instance.loaded.set(limit);
+      instance.ready.set(true);
+    } else {
+      instance.ready.set(false);
+      console.log("> Subscription is not ready yet. \n\n");
+    }
+  });
+
+  // 3. Cursor
+
+  instance.questions = function() {  
+    return Questions.find({$and: [ { publishedAt: { $ne: null }}, { is_answered: null }] }, {sort: {createdAt: -1}, limit: instance.loaded.get()});
+  }  
+};
+
 Template.questionsUnansweredList.helpers({
   questions: function() {
-    return Questions.find({ $and: [{ publishedAt: {$ne: null} }, { is_answered: null}] }, {sort: {createdAt: -1}});
+    return Template.instance().questions();
   },
-
-  moreResults: function() {
-    // If, once the subscription is ready, we have less rows than we
-    // asked for, we've got all the rows in the collection.
-    return !(Questions.find({ $and: [{ publishedAt: {$ne: null} }, { is_answered: null}] }).count() < Session.get("itemsLimit"));
-  }
+  // the subscription handle
+  isReady: function () {
+    return Template.instance().ready.get();
+  },
+  // are there more posts to show?
+  hasMoreQuestions: function () {
+    return Template.instance().questions().count() >= Template.instance().limit.get();
+  },
 });
 
-// whenever #showMoreResults becomes visible, retrieve more results
-function showMoreVisible() {
-  var threshold, target = $("#showMoreResults");
-  if (!target.length) return;
+Template.questionsUnansweredList.events({
+  'click .load-more': function (event, instance) {
+    event.preventDefault();
 
-  threshold = $(window).scrollTop() + $(window).height() - target.height() + 60;
+    // get current value for limit, i.e. how many posts are currently displayed
+    var limit = instance.limit.get();
 
-  if (target.offset().top < threshold) {
-      if (!target.data("visible")) {
-          target.data("visible", true);
-          Session.set("itemsLimit",
-              Session.get("itemsLimit") + ITEMS_INCREMENT);
-      }
-  } else {
-      if (target.data("visible")) {
-          target.data("visible", false);
-      }
-  }       
-}
- 
-// run the above func every time the user scrolls
-$(window).scroll(showMoreVisible);
+    // increase limit by 5 and update it
+    limit += 5;
+    instance.limit.set(limit);
+  }  
+});

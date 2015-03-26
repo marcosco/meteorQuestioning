@@ -37,10 +37,10 @@ Meteor.publish('polls', function() {
   return Polls.find();
 });
 
-Meteor.publish('users', function() {
+Meteor.publish('users', function(limit) {
   if (Roles.userIsInRole(this.userId, 'administrator')) {
-      return Meteor.users.find();
+      return Meteor.users.find({}, {limit: limit});
     }
 
-  return Meteor.users.find({_id: this.userId});
+  return Meteor.users.find({_id: this.userId}, {limit: limit});
 });

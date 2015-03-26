@@ -10,13 +10,20 @@
     </tr>
     </thead>
     <tbody>
-    {{#each userList}}
+    {{#each users}}
       <tr>
         {{>userRow}}
       </tr>
     {{/each}}
      </tbody>
   </table>
+  {{#if isReady}}
+    {{#if hasMoreUsers}}
+      <a class="load-more" href="#">Load More</a>
+    {{/if}}
+  {{else}}
+    <div class="loading">{{>spinner}}</div>
+  {{/if}}  
 </template>
 
 <template name="userRow">

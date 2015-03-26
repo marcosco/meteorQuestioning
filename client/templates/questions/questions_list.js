@@ -1,23 +1,62 @@
-Template.questionsList.helpers({
-  questions: function() {
+Template.questionsList.created = function () {
+
+  // 1. Initialization
+
+  var instance = this;
+
+  // initialize the reactive variables
+  instance.loaded = new ReactiveVar(0);
+  instance.limit = new ReactiveVar(5);
+  instance.ready = new ReactiveVar(false);
+
+  // 2. Autorun
+
+  // will re-run when the "limit" reactive variables changes
+  instance.autorun(function () {
+
+    // get the limit
+    var limit = instance.limit.get();
+
+    console.log("Asking for "+limit+" questions...")
+
+    // subscribe to the posts publication
+    var subscription = Meteor.subscribe('questions', limit);
+
+    // if subscription is ready, set limit to newLimit
+    if (subscription.ready()) {
+      console.log("> Received "+limit+" questions. \n\n")
+      instance.loaded.set(limit);
+      instance.ready.set(true);
+    } else {
+      instance.ready.set(false);
+      console.log("> Subscription is not ready yet. \n\n");
+    }
+  });
+
+  // 3. Cursor
+
+  instance.questions = function() { 
     query = Session.get('srch-term');
     if (query) {
       filter = new RegExp( query, 'i' );
-      Session.set("itemsLimit", 0);
-      return Questions.find({$or: [{"text": filter},{"title": filter}] }, {sort: {createdAt: -1}});
-    };
-
-    return Questions.find({}, {sort: {createdAt: -1}});
-  },
-
-  moreResults: function() {
-    // If, once the subscription is ready, we have less rows than we
-    // asked for, we've got all the rows in the collection.
-    if (query) {
-      filter = new RegExp( query, 'i' );
-      return !(Questions.find({$or: [{"text": filter},{"title": filter}] }).count() < Session.get("itemsLimit"));
+      return Questions.find({$or: [{"text": filter},{"title": filter}] }, {sort: {createdAt: -1}, limit: instance.loaded.get()});
     };    
-    return !(Questions.find().count() < Session.get("itemsLimit"));
+    return Questions.find({}, {sort: {createdAt: -1}, limit: instance.loaded.get()});
+  }  
+};
+
+Template.questionsList.helpers({
+
+  questions: function () {
+    return Template.instance().questions();
+  },
+  // the subscription handle
+  isReady: function () {
+    return Template.instance().ready.get();
+  },
+  // are there more posts to show?
+  hasMoreQuestions: function () {
+    return Template.instance().questions().count() >= Template.instance().limit.get();
   },
 
   filtered:  function() {
@@ -29,28 +68,15 @@ Template.questionsList.events({
   'click .filter': function(e) {
     e.preventDefault();
     Session.set('srch-term', null);
-  }
+  },
+  'click .load-more': function (event, instance) {
+    event.preventDefault();
+
+    // get current value for limit, i.e. how many posts are currently displayed
+    var limit = instance.limit.get();
+
+    // increase limit by 5 and update it
+    limit += 5;
+    instance.limit.set(limit);
+  }  
 });
-
-// whenever #showMoreResults becomes visible, retrieve more results
-function showMoreVisible() {
-  var threshold, target = $("#showMoreResults");
-  if (!target.length) return;
-
-  threshold = $(window).scrollTop() + $(window).height() - target.height() + 60;
-
-  if (target.offset().top < threshold) {
-      if (!target.data("visible")) {
-          target.data("visible", true);
-          Session.set("itemsLimit",
-              Session.get("itemsLimit") + ITEMS_INCREMENT);
-      }
-  } else {
-      if (target.data("visible")) {
-          target.data("visible", false);
-      }
-  }       
-}
- 
-// run the above func every time the user scrolls
-$(window).scroll(showMoreVisible);
