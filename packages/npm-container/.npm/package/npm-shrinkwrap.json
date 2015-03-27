@@ -1,13 +1,13 @@
 {
   "dependencies": {
     "natural": {
-      "version": "0.2.0",
+      "version": "0.2.1",
       "dependencies": {
         "sylvester": {
           "version": "0.0.21"
         },
         "apparatus": {
-          "version": "0.0.8"
+          "version": "0.0.9"
         },
         "underscore": {
           "version": "1.8.2"
@@ -15,7 +15,7 @@
       }
     },
     "sanitize-html": {
-      "version": "1.5.2",
+      "version": "1.6.1",
       "dependencies": {
         "htmlparser2": {
           "version": "3.8.2",

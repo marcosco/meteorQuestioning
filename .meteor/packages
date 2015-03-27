@@ -5,17 +5,17 @@
 # but you can also edit it by hand.
 
 meteor-platform
-bootstrap-3
 accounts-password
 iron:router
-spin
-accounts-ui-bootstrap-3
 alanning:roles
 meteorhacks:npm
 
 
 npm-container
-fs
 meteorhacks:kadira
 anonyfox:tags
 reactive-var
+twbs:bootstrap
+sacha:spin
+ian:accounts-ui-bootstrap-3
+peerlibrary:fs
