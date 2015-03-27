@@ -44,3 +44,7 @@ Meteor.publish('users', function(limit) {
 
   return Meteor.users.find({_id: this.userId}, {limit: limit});
 });
+
+Meteor.publish('arguments', function() {
+  return Arguments.find();
+});

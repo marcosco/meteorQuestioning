@@ -98,7 +98,7 @@ Meteor.startup(function () {
           ignoranceMap: ignoranceMap,
         }
 
-        question_id = Questions.insert(question);
+        question_id = Questioning.addQuestion(question);
 
         try {
           extractedTags = Tags.findFrom(Question.title);
@@ -140,7 +140,7 @@ Meteor.startup(function () {
               publishedBy: owner.username,
             };
 
-            answer_id = Answers.insert(answer);
+            answer_id = Questioning.addAnswer(answer);
 
             if ( Answer.is_accepted ) {
               Questions.update( { _id: question_id }, { $set: { is_answered: answer_id } } );

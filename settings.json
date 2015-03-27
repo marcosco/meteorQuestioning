@@ -7,5 +7,6 @@
     "avoidQuestionRemove": true,
     "avoidQuestionUpdate": false
   },
-  "publishedByDefault" : true
+  "publishedByDefault" : true,
+  "interestingTags": ["css", "javascript"]
 }

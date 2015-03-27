@@ -49,42 +49,11 @@ Meteor.methods({
       });      
     }
 
-    try {
-      questionId = Questions.insert(question);
-      logger.debug("Question " + questionId + " added");      
-    }
-    catch(err) {
-      logger.error(err);
-    }
+    questionId = Questioning.addQuestion(question);
 
     if (Meteor.settings.autoUpdate) {
       logger.debug("Classifier autoUpdate is on.");
-      Natural.LogisticRegressionClassifier.load('assets/app/classifier.json', null, function(err, classifier) {
-        if (err) {
-          return logger.error(err);
-        }
-
-        try {
-          extractedTags = Tags.findFrom(question.title);
-
-          for (var tt = 0, ttlen = question.tags.length; tt < ttlen; tt++) {
-            classifier.addDocument(extractedTags.join(), question.tags[tt]);        
-          }
-          classifier.train();
-          classifier.save('assets/app/classifier.json', function(err, classifier) {
-            // the classifier is saved to the classifier.json file!
-            if (err) {
-              return logger.error(err);
-            }
-
-          });
-      //        classifier.addDocument(extractedTags.join(), Question.tags[0]);
-        }
-        catch(err) {
-          logger.error(err);
-          logger.error("This text cause the error: " + question.title);
-        }
-      });      
+      Questioning.updateClassifier(question);
     }
 
     return questionId;
