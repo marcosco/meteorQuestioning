@@ -1,7 +1,7 @@
 {
   "autoUpdate" : false,
   "globalLogLevel" : "debug",
-  "papertrayLogLevel" : "debug",
+  "papertrayLogLevel" : "info",
   "public" : {
     "pageSize": 10,
     "avoidQuestionRemove": true,
