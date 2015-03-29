@@ -27,7 +27,15 @@ Questioning = {
       Questioning.updateOwnerIgnorance(behaviour);
     });
 
+    Questioning.updateQuestionMap(questionId);
+
     return questionId
+  },
+
+  updateQuestionMap : function(question_id) {
+    distribution = Questioning.getIgnoranceDistributionByQuestion(question_id);
+    Questions.update(question_id, {$set: {ignoranceMap: distribution.ignoranceMap}});
+    logger.debug('Question ' + question_id + ' has updated map');
   },
 
   updateIgnorance : function(behaviour) {
@@ -46,7 +54,8 @@ Questioning = {
 
     var options = {
       user: behaviour.user,
-      question: behaviour.question
+      question: behaviour.question,
+      argument: behaviour.argument      
     }
 
     actualIgnorance = Questioning.getIgnorance(options);
@@ -114,6 +123,7 @@ Questioning = {
       } else {
         Ignorances.insert(actualIgnorance);
       }
+      Questioning.updateQuestionMap(behaviour.question);        
     } catch(err) {
       logger.error(err);
     }
@@ -125,7 +135,8 @@ Questioning = {
 
     var options = {
       user: behaviour.user,
-      question: behaviour.question
+      question: behaviour.question,
+      argument: behaviour.argument
     }
 
     actualIgnorance = Questioning.getIgnorance(options);
@@ -206,6 +217,7 @@ Questioning = {
         logger.debug("Inserting Ignorance");
         Ignorances.insert(actualIgnorance);
       }
+      Questioning.updateQuestionMap(behaviour.question);        
     } catch(err) {
       logger.error(err);
       return false;
@@ -221,7 +233,8 @@ Questioning = {
         classification : "Unknown Unknowns",
         user : options.user,
         question : options.question,
-        score : Meteor.settings.score.initial
+        score : Meteor.settings.score.initial,
+        argument : options.argument
       }    
     }
 
@@ -231,28 +244,13 @@ Questioning = {
   addAnswer : function (answer) {
     question = Questions.findOne(answer.question_id);
 
-    var behaviour = {
-      owner: question.owner,
-      user: answer.owner,
-      question: answer.question_id,
-      action: 'oQ'
-    }
-
-    if (question.owner == answer.owner) {
-      Questioning.updateOwnerIgnorance(behaviour);
-    } else {
-      Questioning.updatePartecipantIgnorance(behaviour);      
-    }
-
-    try {
-      answerId = Answers.insert(answer);
-      logger.debug("Answer " + answerId + " added");
-
+    _.intersection(question.tags, Meteor.settings.interestingTags).forEach(function(argument) {
       var behaviour = {
         owner: question.owner,
         user: answer.owner,
         question: answer.question_id,
-        action: 'aR'
+        argument: argument,
+        action: 'oQ'
       }
 
       if (question.owner == answer.owner) {
@@ -260,7 +258,28 @@ Questioning = {
       } else {
         Questioning.updatePartecipantIgnorance(behaviour);      
       }
-      
+    });  
+
+    try {
+      answerId = Answers.insert(answer);
+      logger.debug("Answer " + answerId + " added");
+
+      _.intersection(question.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+
+        var behaviour = {
+          owner: question.owner,
+          user: answer.owner,
+          question: answer.question_id,
+          argument: argument,
+          action: 'aR'
+        }
+
+        if (question.owner == answer.owner) {
+          Questioning.updateOwnerIgnorance(behaviour);
+        } else {
+          Questioning.updatePartecipantIgnorance(behaviour);      
+        }
+      });      
     }
     catch(err) {
       logger.error(err);
@@ -275,32 +294,123 @@ Questioning = {
 
     logger.debug("Answer " + options.answer._id + " has been set has accepted answer for question " + options.question._id);
 
-    if(options.answer.owner == options.question.owner) {
-      var behaviour = {
-        owner: question.owner,
-        user: question.owner,
-        question: question._id,
-        action: 'sA'
-      }
-      Questioning.updateOwnerIgnorance(behaviour);
-    } else {
+    question = Questions.findOne(options.question._id);
+
+    _.intersection(question.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+      if(options.answer.owner == options.question.owner) {
         var behaviour = {
           owner: options.question.owner,
           user: options.question.owner,
-          question: options.question._id,
-          action: 'aA'
+          question: question._id,
+          argument: argument,
+          action: 'sA'
         }
         Questioning.updateOwnerIgnorance(behaviour);
+      } else {
+          var behaviour = {
+            owner: options.question.owner,
+            user: options.question.owner,
+            question: options.question._id,
+            argument: argument,
+            action: 'aA'
+          }
+          Questioning.updateOwnerIgnorance(behaviour);
 
-        var behaviour = {
-          owner: options.question.owner,
-          user: options.answer.owner,
-          question: options.question._id,
-          action: 'gA'
-        }
-        Questioning.updatePartecipantIgnorance(behaviour);        
-    };
+          var behaviour = {
+            owner: options.question.owner,
+            user: options.answer.owner,
+            question: options.question._id,
+            argument: argument,
+            action: 'gA'
+          }
+          Questioning.updatePartecipantIgnorance(behaviour);        
+      };
+    });
 
+  },
+
+  getIgnoranceDistributionByQuestion : function(question_id) {
+    var distribution = {
+      createdAt: new Date().getTime(),
+      question: question_id,
+      ignoranceMap: {
+        uu: {
+          percentage: 0,
+          absolute: 0,
+        },
+        ku: {
+          percentage: 0,
+          absolute: 0,
+        },
+        er: {
+          percentage: 0,
+          absolute: 0,
+        },
+        de: {
+          percentage: 0,
+          absolute: 0,
+        },
+        kk: {
+          percentage: 0,
+          absolute: 0,
+        },
+      }
+    }
+
+    ku = Ignorances.find({question: question_id, classification: 'Known Unknowns'}).count();
+    er = Ignorances.find({question: question_id, classification: 'Errors'}).count();
+    de = Ignorances.find({question: question_id, classification: 'Denials'}).count();
+    kk = Ignorances.find({question: question_id, classification: 'Known Knowns'}).count();
+    uu = Questioning.getRegisteredUsers() - ku - er - de - kk;
+
+    total = ku + er + de + kk + uu;
+
+    logger.debug('Total: ' + total + ' KU: ' + ku + ' ER: ' + er + ' DE: ' + de + ' KK: ' + kk + ' UU: ' + uu);
+
+    if (total != 0) {
+      distribution.ignoranceMap.ku.percentage = Math.round(( 100 / total ) * ku);
+      distribution.ignoranceMap.er.percentage = Math.round(( 100 / total ) * er);
+      distribution.ignoranceMap.de.percentage = Math.round(( 100 / total ) * de);
+      distribution.ignoranceMap.kk.percentage = Math.round(( 100 / total ) * kk);
+      distribution.ignoranceMap.uu.percentage = 100 - distribution.ignoranceMap.ku.percentage
+                                                    - distribution.ignoranceMap.er.percentage
+                                                    - distribution.ignoranceMap.de.percentage
+                                                    - distribution.ignoranceMap.kk.percentage;
+
+      logger.debug( ' KU: ' + distribution.ignoranceMap.ku.percentage
+       + ' ER: ' + distribution.ignoranceMap.er.percentage 
+       + ' DE: ' + distribution.ignoranceMap.de.percentage
+       + ' KK: ' + distribution.ignoranceMap.kk.percentage 
+       + ' UU: ' + distribution.ignoranceMap.uu.percentage);
+    }
+
+    distribution.ignoranceMap.uu.absolute = uu;
+    distribution.ignoranceMap.ku.absolute = ku;
+    distribution.ignoranceMap.er.absolute = er;
+    distribution.ignoranceMap.de.absolute = de;
+    distribution.ignoranceMap.kk.absolute = kk;
+
+    return distribution;
+  },
+
+  getIgnoranceDistributionByUser : function (userId) {
+    ignorance = {};
+    Meteor.settings.interestingTags.forEach(function(argument) {
+      Ignorances.find({user: userId, argument: argument}).count();
+    });    
+  },
+
+
+  getExistingQuestions : function (tag) {
+    if (typeof(tag)==='undefined') {
+      return Questions.find().count();
+    }
+
+    return Questions.find({tags: tag}).count();
+  },
+
+  getRegisteredUsers : function() {
+    return Meteor.users.find().count();
   },
 
   updateClassifier : function (question) {

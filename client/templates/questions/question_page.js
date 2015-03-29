@@ -19,5 +19,9 @@ Template.questionPage.helpers({
     } else {
       return false;
     }
+  },
+
+  questionClosed: function() {
+    return this.is_closed;
   }
 });

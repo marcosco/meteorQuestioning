@@ -62,16 +62,6 @@ Meteor.startup(function () {
 
       logger.info("loading " + file);
 
-      var ignoranceMap = {
-        knownUnknowns: 0,
-        unknownUnknowns: 0,
-        errors: 0,
-        unknownKnowns: 0,
-        taboos: 0,
-        denials: 0,
-        total: 0
-      };  
-
       for (var i = 0, len = Questions1.items.length; i < len; i++) {
         var Question = Questions1.items[i];
 
@@ -93,9 +83,9 @@ Meteor.startup(function () {
           owner: owner._id,
           username: owner.username,
           is_answered: null,
+          is_closed: false,
           publishedAt: new Date().getTime(),
-          publishedBy: owner.username,
-          ignoranceMap: ignoranceMap,
+          publishedBy: owner.username
         }
 
         question_id = Questioning.addQuestion(question);

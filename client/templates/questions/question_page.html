@@ -1,10 +1,10 @@
 <template name="questionPage">
   {{> questionItem}}
-  {{#if isPublisher}}
+  {{#unless questionClosed}}
   <div>
     {{> answerForm}}
   </div>
-  {{/if}}
+  {{/unless}}
   <div class="replies">
     {{#each replies}}
       {{> answerItem}}

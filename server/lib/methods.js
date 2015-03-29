@@ -29,6 +29,7 @@ Meteor.methods({
         owner: Meteor.userId(),
         username: Meteor.user().username,
         is_answered: null,
+        is_closed: false,
         score: 0,
         tags: questionAttr.tags.split(','),
         publishedAt: new Date().getTime(),
@@ -41,6 +42,7 @@ Meteor.methods({
         owner: Meteor.userId(),
         username: Meteor.user().username,
         is_answered: null,
+        is_closed: false,
         score: 0,
         tags: questionAttr.tags.split(','),
         publishedAt: null,
@@ -69,20 +71,6 @@ Meteor.methods({
     if (!answerAttr.text)
       throw new Meteor.Error(422, 'Text is required');    
 
-    if (!Roles.userIsInRole(Meteor.user(), ['publisher'])) {
-      throw new Meteor.Error("not-authorized");      
-    }
-
-    var ignoranceMap = {
-      knownUnknowns: 0,
-      unknownUnknowns: 0,
-      errors: 0,
-      unknownKnowns: 0,
-      taboos: 0,
-      denials: 0,
-      total: 0
-    };
-
     var answer = _.extend(_.pick(answerAttr, 'text', 'question_id'), {
       createdAt: new Date().getTime(),
       owner: Meteor.userId(),
@@ -91,7 +79,6 @@ Meteor.methods({
       score: 0,
       publishedAt: new Date().getTime(),
       publishedBy: Meteor.user().username,
-      ignoranceMap: ignoranceMap
     });
 
     answerId = Questioning.addAnswer(answer);
@@ -386,6 +373,10 @@ Meteor.methods({
   getMyIgnorance: function(query) {
     return Questioning.getIgnorance(query);
   },
+
+  getIgnoranceDistributionByQuestion: function(question_id) {
+    return Questioning.getIgnoranceDistributionByQuestion(question_id);
+  },  
 
   updateIgnorance: function(options) {
     Questioning.updateIgnorance(options);

@@ -1,5 +1,5 @@
 Template.questionItem.helpers({
-  ownPost: function() {
+  ownPost: function() { 
     return this.owner == Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'administrator');
   },
 
@@ -79,7 +79,8 @@ Template.questionItem.helpers({
     }
 
     return ignorance;
-  }
+  },
+
 });
   
 Template.questionItem.events({

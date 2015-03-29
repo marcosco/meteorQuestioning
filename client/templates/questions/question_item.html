@@ -20,14 +20,14 @@
         My Score is:  <b>{{currentIgnorance.score}}</b>
       </p>
       <p>
-        Ignorance Map Distribution:
+        Question's Ignorance Map Distribution:
         <ul>
-          <li>Known Unknowns: {{ignoranceMap.knownUnknowns}} {{distribution ignoranceMap.knownUnknowns ignoranceMap.total}} %</li>
-          <li>Unknown Unknowns: {{ignoranceMap.unknownUnknowns}} {{distribution ignoranceMap.unknownUnknowns ignoranceMap.total}} %</li>
-          <li>Errors: {{ignoranceMap.errors}} {{distribution ignoranceMap.errors ignoranceMap.total}} %</li>
-          <li>Unknown Knowns: {{ignoranceMap.unknownKnowns}} {{distribution ignoranceMap.unknownKnowns ignoranceMap.total}} %</li>
-          <li>Taboos: {{ignoranceMap.taboos}} {{distribution ignoranceMap.taboos ignoranceMap.total}} %</li>
-          <li>Denials: {{ignoranceMap.denials}} {{distribution ignoranceMap.denials ignoranceMap.total}} %</li>               
+          <li>Known Unknowns: {{ignoranceMap.ku.absolute}} {{ignoranceMap.ku.percentage}} %</li>
+          <li>Unknown Unknowns: {{ignoranceMap.uu.absolute}} {{ignoranceMap.uu.percentage}} %</li>
+          <li>Errors: {{ignoranceMap.er.absolute}} {{ignoranceMap.er.percentage}} %</li>
+          <li>Unknown Knowns: {{ignoranceMap.uk.absolute}} {{ignoranceMap.uk.percentage}} %</li>
+          <li>Denials: {{ignoranceMap.de.absolute}} {{ignoranceMap.de.percentage}} %</li>        
+          <li>Known Knowns: {{ignoranceMap.kk.absolute}} {{ignoranceMap.kk.percentage}} %</li>                     
         </ul>
       </p>
     </div>
