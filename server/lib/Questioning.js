@@ -9,11 +9,7 @@ Questioning = {
     }
 
     _.intersection(question.tags, Meteor.settings.interestingTags).forEach(function(argument) {
-      var entry = {
-        argument: argument,
-        question: questionId
-      }
-      Arguments.insert(entry);
+      Questioning.updateArgumentMap(argument);
       logger.info('A new interesting ' + argument + ' question has been added by ' + question.username);
 
       var behaviour = {
@@ -32,6 +28,16 @@ Questioning = {
     return questionId
   },
 
+  updateArgumentMap : function(argument) {
+    distribution = Questioning.getIgnoranceDistributionByArgument(argument);
+
+    if (Arguments.find({argument: argument}).count() != 0) {
+      Arguments.update({argument: argument}, {$set: {distribution: distribution}});
+    } else {
+      Arguments.insert({argument: argument, distribution: distribution});
+    }
+  },
+
   updateQuestionMap : function(question_id) {
     distribution = Questioning.getIgnoranceDistributionByQuestion(question_id);
     Questions.update(question_id, {$set: {ignoranceMap: distribution.ignoranceMap}});
@@ -42,11 +48,14 @@ Questioning = {
     question = Questions.findOne(behaviour.question);
 
     behaviour.owner = question.owner;
-    if (behaviour.owner == behaviour.user) {
-      Questioning.updateOwnerIgnorance(behaviour);      
-    } else {
-      Questioning.updatePartecipantIgnorance(behaviour);
-    }
+    _.intersection(question.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+      behaviour.argument = argument;
+      if (behaviour.owner == behaviour.user) {
+        Questioning.updateOwnerIgnorance(behaviour);      
+      } else {
+        Questioning.updatePartecipantIgnorance(behaviour);
+      }
+    });
   },
 
   updateOwnerIgnorance : function (behaviour) {
@@ -123,7 +132,8 @@ Questioning = {
       } else {
         Ignorances.insert(actualIgnorance);
       }
-      Questioning.updateQuestionMap(behaviour.question);        
+      Questioning.updateQuestionMap(behaviour.question);
+      Questioning.updateArgumentMap(behaviour.argument);        
     } catch(err) {
       logger.error(err);
     }
@@ -217,7 +227,8 @@ Questioning = {
         logger.debug("Inserting Ignorance");
         Ignorances.insert(actualIgnorance);
       }
-      Questioning.updateQuestionMap(behaviour.question);        
+      Questioning.updateQuestionMap(behaviour.question);      
+      Questioning.updateArgumentMap(behaviour.argument);                
     } catch(err) {
       logger.error(err);
       return false;
@@ -336,28 +347,33 @@ Questioning = {
       ignoranceMap: {
         uu: {
           percentage: 0,
-          absolute: 0,
+          absolute: 0
+        },
+        uk: {
+          percentage: 0,
+          absolute: 0
         },
         ku: {
           percentage: 0,
-          absolute: 0,
+          absolute: 0
         },
         er: {
           percentage: 0,
-          absolute: 0,
+          absolute: 0
         },
         de: {
           percentage: 0,
-          absolute: 0,
+          absolute: 0
         },
         kk: {
           percentage: 0,
-          absolute: 0,
+          absolute: 0
         },
       }
     }
 
     ku = Ignorances.find({question: question_id, classification: 'Known Unknowns'}).count();
+    uk = Ignorances.find({question: question_id, classification: 'Unknown Knowns'}).count();
     er = Ignorances.find({question: question_id, classification: 'Errors'}).count();
     de = Ignorances.find({question: question_id, classification: 'Denials'}).count();
     kk = Ignorances.find({question: question_id, classification: 'Known Knowns'}).count();
@@ -365,19 +381,22 @@ Questioning = {
 
     total = ku + er + de + kk + uu;
 
-    logger.debug('Total: ' + total + ' KU: ' + ku + ' ER: ' + er + ' DE: ' + de + ' KK: ' + kk + ' UU: ' + uu);
+    logger.debug('Total: ' + total + ' KU: ' + ku + ' UK: ' + uk + ' ER: ' + er + ' DE: ' + de + ' KK: ' + kk + ' UU: ' + uu);
 
     if (total != 0) {
       distribution.ignoranceMap.ku.percentage = Math.round(( 100 / total ) * ku);
+      distribution.ignoranceMap.uk.percentage = Math.round(( 100 / total ) * uk);
       distribution.ignoranceMap.er.percentage = Math.round(( 100 / total ) * er);
       distribution.ignoranceMap.de.percentage = Math.round(( 100 / total ) * de);
       distribution.ignoranceMap.kk.percentage = Math.round(( 100 / total ) * kk);
       distribution.ignoranceMap.uu.percentage = 100 - distribution.ignoranceMap.ku.percentage
+                                                    - distribution.ignoranceMap.uk.percentage
                                                     - distribution.ignoranceMap.er.percentage
                                                     - distribution.ignoranceMap.de.percentage
                                                     - distribution.ignoranceMap.kk.percentage;
 
       logger.debug( ' KU: ' + distribution.ignoranceMap.ku.percentage
+       + ' UK: ' + distribution.ignoranceMap.ku.percentage 
        + ' ER: ' + distribution.ignoranceMap.er.percentage 
        + ' DE: ' + distribution.ignoranceMap.de.percentage
        + ' KK: ' + distribution.ignoranceMap.kk.percentage 
@@ -386,6 +405,7 @@ Questioning = {
 
     distribution.ignoranceMap.uu.absolute = uu;
     distribution.ignoranceMap.ku.absolute = ku;
+    distribution.ignoranceMap.uk.absolute = ku;    
     distribution.ignoranceMap.er.absolute = er;
     distribution.ignoranceMap.de.absolute = de;
     distribution.ignoranceMap.kk.absolute = kk;
@@ -396,12 +416,75 @@ Questioning = {
   getIgnoranceDistributionByUser : function (userId) {
     ignorance = {};
     Meteor.settings.interestingTags.forEach(function(argument) {
-      Ignorances.find({user: userId, argument: argument}).count();
+      total = Questioning.getQuestionsCount(argument);
+      ignorance[argument].total = total;
+      ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
+      ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
+      ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
+      ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
+      ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
+      ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+
     });    
   },
 
+  getIgnoranceDistributionByArgument : function (argument) {
+    totalUsers = Questioning.getRegisteredUsers();
+    totalQuestions = Questioning.getQuestionsCount(argument);
 
-  getExistingQuestions : function (tag) {
+    total = totalUsers * totalQuestions;
+
+    ku = Ignorances.find({argument: argument, classification : "Known Unknowns"}).count();
+    uk = Ignorances.find({argument: argument, classification : "Unknown Knowns"}).count();    
+    er = Ignorances.find({argument: argument, classification : "Errors"}).count();
+    de = Ignorances.find({argument: argument, classification : "Denials"}).count();
+    kk = Ignorances.find({argument: argument, classification : "Known Knowns"}).count();
+    uu = total - ku - er - de - kk;
+
+    ignoranceMap = {
+      uu: {
+        percentage: 0,
+        absolute: uu
+      },
+      ku: {
+        percentage: 0,
+        absolute: ku
+      },
+      uk: {
+        percentage: 0,
+        absolute: uk
+      },      
+      er: {
+        percentage: 0,
+        absolute: er
+      },
+      de: {
+        percentage: 0,
+        absolute: de
+      },
+      kk: {
+        percentage: 0,
+        absolute: kk
+      },
+    }
+
+    if (total != 0) {
+      ignoranceMap.ku.percentage = Math.round((100 / total) * ku);
+      ignoranceMap.uk.percentage = Math.round((100 / total) * uk);      
+      ignoranceMap.er.percentage = Math.round((100 / total) * er);
+      ignoranceMap.de.percentage = Math.round((100 / total) * de);
+      ignoranceMap.kk.percentage = Math.round((100 / total) * kk);
+      ignoranceMap.uu.percentage = 100 - ignoranceMap.ku.percentage
+                                       - ignoranceMap.uk.percentage
+                                       - ignoranceMap.er.percentage
+                                       - ignoranceMap.de.percentage
+                                       - ignoranceMap.kk.percentage;
+    }
+
+    return ignoranceMap;
+  },
+
+  getQuestionsCount : function (tag) {
     if (typeof(tag)==='undefined') {
       return Questions.find().count();
     }

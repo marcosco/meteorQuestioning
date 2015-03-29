@@ -19,3 +19,4 @@ twbs:bootstrap
 sacha:spin
 ian:accounts-ui-bootstrap-3
 peerlibrary:fs
+mrt:chartjs

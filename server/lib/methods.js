@@ -382,4 +382,8 @@ Meteor.methods({
     Questioning.updateIgnorance(options);
   },
 
+  getInterestingTags: function() {
+    return Meteor.settings.interestingTags;
+  }
+
 });

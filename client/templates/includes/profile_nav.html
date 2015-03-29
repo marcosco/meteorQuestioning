@@ -20,6 +20,9 @@
                 <li class="{{ activeIfTemplateIs 'ManageUsers' }}">
                   <a href="{{pathFor 'manageUsers'}}">Manage Users</a>
                 </li>
+                <li class="{{ activeIfTemplateIs 'IgnoranceMap' }}">
+                  <a href="{{pathFor 'ignoranceMap'}}">Ignorance Map</a>
+                </li>
                 {{/if}}
                 <li class="{{ activeIfTemplateIs 'UserProfile' }}">
                   <a href="{{pathFor 'userProfile'}}">Profile</a>

@@ -1,5 +1,17 @@
 <template name="myIgnoranceMap">
-  <h2>Known Unknowns</h2>
+
+  <h1>My Ignorance Map</h1>
+    {{#each interestingTags}}
+      <div class="ignoranceRow">
+        {{>myIgnoranceRow}}
+      </div>
+    {{/each}}
+
+</template>
+
+<template name="myIgnoranceRow">
+  <h2>{{this.argument}}</h2>
+  <h3>Known Unknowns</h3>
   {{#if questionsKU.count}}
   <table class="table table-hover">
     <thead>
@@ -19,7 +31,7 @@
   No data to display.
   {{/if}}
 
-  <h2>Unknown Unknowns</h2>
+  <h3>Unknown Unknowns</h3>
   {{#if questionsUU.count}}
   <table class="table table-hover">
     <thead>
@@ -39,7 +51,7 @@
   No data to display.
   {{/if}}
 
-  <h2>Errors</h2>
+  <h3>Errors</h3>
   {{#if questionsER.count}}
   <table class="table table-hover">
     <thead>
@@ -59,7 +71,7 @@
   No data to display.
   {{/if}}
 
-  <h2>Unknown Knowns</h2>
+  <h3>Unknown Knowns</h3>
   {{#if questionsUK.count}}  
   <table class="table table-hover">
     <thead>
@@ -79,8 +91,8 @@
   No data to display.
   {{/if}}
 
-  <h2>Taboos</h2>
-  {{#if questionsTA.count}}    
+  <h3>Known Knowns</h3>
+  {{#if questionsKK.count}}    
   <table class="table table-hover">
     <thead>
     <tr>
@@ -88,7 +100,7 @@
     </tr>
     </thead>
     <tbody>
-    {{#each questionsTA}}
+    {{#each questionsKK}}
       <tr>
         <td><a href="{{pathFor 'questionPage'}}">{{this.title}}</a></td>
       </tr>
@@ -99,7 +111,7 @@
   No data to display.
   {{/if}}
 
-  <h2>Denials</h2>
+  <h3>Denials</h3>
   {{#if questionsDE.count}}   
   <table class="table table-hover">
     <thead>
