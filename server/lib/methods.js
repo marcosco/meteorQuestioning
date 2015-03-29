@@ -94,13 +94,7 @@ Meteor.methods({
       ignoranceMap: ignoranceMap
     });
 
-    try {
-      answerId = Answers.insert(answer);
-      logger.debug("Answer " + answerId + " added");      
-    }
-    catch(err) {
-      logger.error(err);
-    }
+    answerId = Questioning.addAnswer(answer);
 
     return answerId;
   },
@@ -203,9 +197,12 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");      
     }
 
-    Answers.update( { _id: answer._id }, {$set: { is_accepted: true }} );
-    Questions.update( { _id: question._id }, {$set: { is_answered: answer._id }} );
-    logger.debug("Answer " + answer.id + " has been set has accepted answer for question " + question.id);
+    var options = {
+      question: question,
+      answer: answer
+    }
+
+    Questioning.setAccepted(options);
   },
 
   decQuestionScore: function(id) {
@@ -384,6 +381,14 @@ Meteor.methods({
 
     logger.info("impersonating " + userId);
     this.setUserId(userId);
-  }  
+  },
+
+  getMyIgnorance: function(query) {
+    return Questioning.getIgnorance(query);
+  },
+
+  updateIgnorance: function(options) {
+    Questioning.updateIgnorance(options);
+  },
 
 });

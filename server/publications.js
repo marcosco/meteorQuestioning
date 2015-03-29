@@ -48,3 +48,10 @@ Meteor.publish('users', function(limit) {
 Meteor.publish('arguments', function() {
   return Arguments.find();
 });
+
+Meteor.publish('ignorances', function() {
+  if (Roles.userIsInRole(this.userId, 'administrator')) {
+      return Ignorances.find();
+  }
+  return Ignorances.find({user: this.userId});
+});

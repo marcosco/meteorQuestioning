@@ -1,0 +1,1 @@
+Ignorances = new Meteor.Collection('ignorances');

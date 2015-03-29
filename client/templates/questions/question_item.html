@@ -16,6 +16,10 @@
       {{/each}}
       </p>
       <p>
+        My Ignorance is: <b>{{currentIgnorance.classification}}</b>
+        My Score is:  <b>{{currentIgnorance.score}}</b>
+      </p>
+      <p>
         Ignorance Map Distribution:
         <ul>
           <li>Known Unknowns: {{ignoranceMap.knownUnknowns}} {{distribution ignoranceMap.knownUnknowns ignoranceMap.total}} %</li>
@@ -26,25 +30,6 @@
           <li>Denials: {{ignoranceMap.denials}} {{distribution ignoranceMap.denials ignoranceMap.total}} %</li>               
         </ul>
       </p>
-      {{#if currentUser}}
-        {{#if myIgnorance}}
-        <p>
-          My Ignorance is: <b>{{myIgnorance}}</b>
-        </p>
-        {{else}}
-        <p>
-          State your Ignorance:
-          <div class="btn-group" role="group" aria-label="...">
-            <button type="button" class="btn btn-default ku">Known Unknowns</button>
-            <button type="button" class="btn btn-default uu">Unknown Unknowns</button>
-            <button type="button" class="btn btn-default er">Errors</button>
-            <button type="button" class="btn btn-default uk">Unknown Knowns</button>
-            <button type="button" class="btn btn-default ta">Taboos</button>
-            <button type="button" class="btn btn-default de">Denials</button>          
-          </div>
-        </p>
-        {{/if}}
-      {{/if}}
     </div>
     {{#unless avoidQuestionUpdate }}
     {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}

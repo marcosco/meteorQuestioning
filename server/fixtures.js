@@ -143,7 +143,14 @@ Meteor.startup(function () {
             answer_id = Questioning.addAnswer(answer);
 
             if ( Answer.is_accepted ) {
-              Questions.update( { _id: question_id }, { $set: { is_answered: answer_id } } );
+              Q = Questions.findOne(question_id);
+              A = Answers.findOne(answer_id);
+              var options = {
+                question: Q,
+                answer: A
+              }
+
+              Questioning.setAccepted(options);
             }
           }      
         }

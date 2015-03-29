@@ -4,9 +4,23 @@
   "papertrayLogLevel" : "info",
   "public" : {
     "pageSize": 10,
-    "avoidQuestionRemove": true,
+    "avoidQuestionRemove": false,
     "avoidQuestionUpdate": false
   },
   "publishedByDefault" : true,
-  "interestingTags": ["css", "javascript"]
+  "interestingTags": ["css", "javascript"],
+  "score": {
+    "initial" : 0,
+    "newQuestion" : 1,
+    "openQuestion" : 1,
+    "getMinus" : 1,
+    "putMinus" : 1,
+    "getPlus" : 1,
+    "putPlus" : 1,
+    "addAnswer" : 1,    
+    "acceptAnswer" : 1,
+    "refuseAnswer" : 1,
+    "selfAccept" : 1,
+    "getAccept" :1
+  }
 }

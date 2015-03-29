@@ -61,9 +61,27 @@ Template.questionItem.helpers({
       return currentPoll.classification;      
     else
       return false;
-  }    
-});
+  },
 
+  currentIgnorance: function() {
+    var query = {
+      user : Meteor.userId(),
+      question: this._id
+    }
+
+    ignorance = Ignorances.findOne(query);
+
+    if (typeof(ignorance)==='undefined') {
+      ignorance = {
+        classification : "Unknown Unknowns",
+        score : 0
+      }    
+    }
+
+    return ignorance;
+  }
+});
+  
 Template.questionItem.events({
   'click .question-minus': function(e) {
     e.preventDefault();
