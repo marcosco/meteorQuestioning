@@ -11,6 +11,9 @@
 
 <template name="myIgnoranceRow">
   <h2>{{this.argument}}</h2>
+  <div class="chart">
+    <canvas id="{{chart}}" style="width:100%; height:100%"></canvas>
+  </div>  
   <h3>Known Unknowns</h3>
   {{#if questionsKU.count}}
   <table class="table table-hover">

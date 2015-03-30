@@ -413,19 +413,38 @@ Questioning = {
     return distribution;
   },
 
-  getIgnoranceDistributionByUser : function (userId) {
-    ignorance = {};
-    Meteor.settings.interestingTags.forEach(function(argument) {
-      total = Questioning.getQuestionsCount(argument);
-      ignorance[argument].total = total;
-      ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
-      ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
-      ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
-      ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
-      ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
-      ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+  getIgnoranceDistributionByUser : function (userId, argument) {
+    if (typeof(argument)==='undefined') {
+      ignorance = {};
+      Meteor.settings.interestingTags.forEach(function(argument) {
+        ignorance[argument] = {};
+        total = Questioning.getQuestionsCount(argument);
+        ignorance[argument].total = total;
+        ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
+        ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
+        ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
+        ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
+        ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
+        ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
 
-    });    
+      });
+
+      return ignorance;    
+    }
+
+    ignorance = {};
+    ignorance[argument] = {};
+    ignorance[argument].argument = argument;
+    total = Questioning.getQuestionsCount(argument);
+    ignorance[argument].total = total;
+    ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
+    ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
+    ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
+    ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
+    ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
+    ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+
+    return ignorance[argument];    
   },
 
   getIgnoranceDistributionByArgument : function (argument) {

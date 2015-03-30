@@ -33,11 +33,47 @@ Template.questionsMineList.created = function () {
 
   instance.questions = function() { 
     query = Session.get('srch-term');
+
+    var qlist = Answers.find({owner: Meteor.userId()});
+    itemList = qlist.map(function (qlist) {
+      return qlist.question_id;
+    });
+
     if (query) {
       filter = new RegExp( query, 'i' );
-      return Questions.find({$and: [ {owner: Meteor.userId()} , {$or: [{"text": filter},{"title": filter}]}] }, {sort: {createdAt: -1}, limit: instance.loaded.get()});
+      return Questions.find({
+              $or: [
+                {
+                  $and: [ 
+                    {_id: {$in: itemList}} , 
+                    {$or: [
+                      {"text": filter},
+                      {"title": filter}
+                      ]
+                    }
+                  ]                
+                },
+                {
+                  $and: [ 
+                    {owner: Meteor.userId()} , 
+                    {$or: [
+                      {"text": filter},
+                      {"title": filter}
+                      ]
+                    }
+                  ]                
+                }
+              ]
+               },
+              {sort: {createdAt: -1}, limit: instance.loaded.get()});
     };    
-    return Questions.find({ owner: Meteor.userId() }, {sort: {createdAt: -1}, limit: instance.loaded.get()});
+    return Questions.find({ 
+              $or: [
+                { owner: Meteor.userId() },
+                { _id: {$in: itemList} } 
+              ]
+              }, 
+              {sort: {createdAt: -1}, limit: instance.loaded.get()});
   }  
 };
 

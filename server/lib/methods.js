@@ -207,7 +207,7 @@ Meteor.methods({
     }
 
     Questions.update( { _id: id }, {$inc: { score: 1 }} );
-    logger.debug("Question " + id + " has incrasing score.")
+    logger.debug("Question " + id + " has increasing score.")
   },
 
   decAnswerScore: function(id) {
@@ -216,7 +216,7 @@ Meteor.methods({
     }
 
     Answers.update( { _id: id }, {$inc: { score: -1 }} );
-    logger.debug("Answer " + id + " has decrasing score.")
+    logger.debug("Answer " + id + " has decreasing score.")
   },
 
   incAnswerScore: function(id) {
@@ -376,6 +376,10 @@ Meteor.methods({
 
   getIgnoranceDistributionByQuestion: function(question_id) {
     return Questioning.getIgnoranceDistributionByQuestion(question_id);
+  },  
+
+  getIgnoranceDistributionByUser: function(user_id, argument) {
+    return Questioning.getIgnoranceDistributionByUser(user_id, argument);
   },  
 
   updateIgnorance: function(options) {

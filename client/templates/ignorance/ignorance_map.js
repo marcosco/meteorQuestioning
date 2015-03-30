@@ -15,6 +15,12 @@ function drawChart(item) {
           label: "Unknown Unknowns"
       },
       {
+          value: item.distribution.ku.absolute,
+          color: "#46BFBD",
+          highlight: "#5AD3D1",
+          label: "Known Unknowns"
+      },
+      {
           value: item.distribution.uk.absolute,
           color: "#46BFBD",
           highlight: "#5AD3D1",

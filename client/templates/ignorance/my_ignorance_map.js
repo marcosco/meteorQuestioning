@@ -15,6 +15,12 @@ function drawChart(item) {
           label: "Unknown Knowns"
       },
       {
+          value: item.distribution.ku.absolute,
+          color: "#46BFBD",
+          highlight: "#5AD3D1",
+          label: "Known Unknowns"
+      },
+      {
           value: item.distribution.er.absolute,
           color: "#FDB45C",
           highlight: "#FFC870",
@@ -34,16 +40,45 @@ function drawChart(item) {
       }      
   ]
 
+  console.log(data);
+
   var ctx = $(canvas).get(0).getContext("2d");
   var myNewChart = new Chart(ctx)
   new Chart(ctx).Pie(data,null);
 
 }
 Template.myIgnoranceRow.rendered = function () {
+  console.log('out ' + this.data.argument);
+  argument = this.data.argument;
     //Get the context of the canvas element we want to select
-  Arguments.find().forEach(function (item){
+  Meteor.call('getIgnoranceDistributionByUser', Meteor.userId(), this.data.argument, function (error, result){
+    data = {
+      argument: result.argument,
+      distribution: {
+        uu: {
+          absolute: result.uu,
+        },
+        ku: {
+          absolute: result.ku,
+        },
+        er: {
+          absolute: result.er,
+        },
+        de: {
+          absolute: result.de,
+        },
+        uk: {
+          absolute: result.uk,
+        },
+        kk: {
+          absolute: result.kk,
+        }
+      }       
+    };
+
+    drawChart(data);
+  });
     //drawChart(item);
-  })
 };
 
 Template.myIgnoranceMap.helpers({
