@@ -7,9 +7,15 @@
       {{#if isPublisher}}
       <p><span class="badge question-badge" style="background-color: {{pubBadgeColor}}">{{isPublished}}</span></p>
       {{/if}}
-      <p>Score: <span class="glyphicon glyphicon-minus question-minus" aria-hidden="true"></span>
+      <p>Score: 
+        {{#unless ownPost}}
+        <span class="glyphicon glyphicon-minus question-minus" aria-hidden="true"></span>
+        {{/unless}}
         {{score}}
-        <span class="glyphicon glyphicon-plus question-plus" aria-hidden="true"></span></p>
+        {{#unless ownPost}}
+        <span class="glyphicon glyphicon-plus question-plus" aria-hidden="true"></span>
+        {{/unless}}
+      </p>
       <p>
       {{#each tags}}
         <span class="badge" style="display: inline-block; background-color: #3E6D8E">{{this}}</span>
@@ -32,7 +38,7 @@
       </p>
     </div>
     {{#unless avoidQuestionUpdate }}
-    {{#if ownPost}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
+    {{#if ownPostOrAdmin}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
     {{/unless}}
 
   </div>

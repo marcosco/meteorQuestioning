@@ -24,7 +24,6 @@ Template.questionForm.events({
 
   "change #questionTitleModal": function (e) {
     e.preventDefault();
-    console.log($("#questionTitleModal").val());
 
     Meteor.call('classify', $("#questionTitleModal").val(), function (error, result) {
      $("#questionTagsModal").val(result.join()); });

@@ -100,7 +100,7 @@ Template.questionsMineList.events({
     var limit = instance.limit.get();
 
     // increase limit by 5 and update it
-    limit += 5;
+    limit += Meteor.settings.public.pageSize;
     instance.limit.set(limit);
   }  
 });

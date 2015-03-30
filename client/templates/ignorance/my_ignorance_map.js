@@ -4,43 +4,41 @@ function drawChart(item) {
   var data = [
       {
           value: item.distribution.uu.absolute,
-          color:"#F7464A",
-          highlight: "#FF5A5E",
-          label: "Unknown Unknowns"
-      },
-      {
-          value: item.distribution.uk.absolute,
-          color: "#46BFBD",
-          highlight: "#5AD3D1",
-          label: "Unknown Knowns"
+          color: Meteor.settings.public.ignoranceMap.uu.color,
+          highlight: Meteor.settings.public.ignoranceMap.uu.highlight,
+          label: Meteor.settings.public.ignoranceMap.uu.label
       },
       {
           value: item.distribution.ku.absolute,
-          color: "#46BFBD",
-          highlight: "#5AD3D1",
-          label: "Known Unknowns"
+          color: Meteor.settings.public.ignoranceMap.ku.color,
+          highlight: Meteor.settings.public.ignoranceMap.ku.highlight,
+          label: Meteor.settings.public.ignoranceMap.ku.label
+      },
+      {
+          value: item.distribution.uk.absolute,
+          color: Meteor.settings.public.ignoranceMap.uk.color,
+          highlight: Meteor.settings.public.ignoranceMap.uk.highlight,
+          label: Meteor.settings.public.ignoranceMap.uk.label
       },
       {
           value: item.distribution.er.absolute,
-          color: "#FDB45C",
-          highlight: "#FFC870",
-          label: "Errors"
+          color: Meteor.settings.public.ignoranceMap.er.color,
+          highlight: Meteor.settings.public.ignoranceMap.er.highlight,
+          label: Meteor.settings.public.ignoranceMap.er.label
       },
       {
           value: item.distribution.de.absolute,
-          color: "#46BFBD",
-          highlight: "#5AD3D1",
-          label: "Denials"
+          color: Meteor.settings.public.ignoranceMap.de.color,
+          highlight: Meteor.settings.public.ignoranceMap.de.highlight,
+          label: Meteor.settings.public.ignoranceMap.de.label
       },
       {
           value: item.distribution.kk.absolute,
-          color: "#FDB45C",
-          highlight: "#FFC870",
-          label: "Known Knowns"
-      }      
+          color: Meteor.settings.public.ignoranceMap.kk.color,
+          highlight: Meteor.settings.public.ignoranceMap.kk.highlight,
+          label: Meteor.settings.public.ignoranceMap.kk.label
+      }          
   ]
-
-  console.log(data);
 
   var ctx = $(canvas).get(0).getContext("2d");
   var myNewChart = new Chart(ctx)
@@ -48,7 +46,6 @@ function drawChart(item) {
 
 }
 Template.myIgnoranceRow.rendered = function () {
-  console.log('out ' + this.data.argument);
   argument = this.data.argument;
     //Get the context of the canvas element we want to select
   Meteor.call('getIgnoranceDistributionByUser', Meteor.userId(), this.data.argument, function (error, result){
@@ -88,6 +85,15 @@ Template.myIgnoranceMap.helpers({
 });
 
 Template.myIgnoranceRow.helpers({
+  score: function() {
+    items = Ignorances.find({user: Meteor.userId(), argument: this.argument});
+    var count = 0;
+    items.forEach(function (item) {
+      count += item.score;
+    });
+    return count;
+  },
+
   chart: function() {
     canvasId = this.argument + "_Chart";
     return canvasId;

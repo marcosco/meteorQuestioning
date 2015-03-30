@@ -34,7 +34,8 @@ Meteor.methods({
         tags: questionAttr.tags.split(','),
         publishedAt: new Date().getTime(),
         publishedBy: Meteor.user().username,
-        ignoranceMap: ignoranceMap
+        ignoranceMap: ignoranceMap,
+        changes: []
       });      
     } else {
       var question = _.extend(_.pick(questionAttr, 'title', 'text'), {
@@ -47,7 +48,8 @@ Meteor.methods({
         tags: questionAttr.tags.split(','),
         publishedAt: null,
         publishedBy: null,
-        ignoranceMap: ignoranceMap
+        ignoranceMap: ignoranceMap,
+        changes: []
       });      
     }
 
@@ -79,6 +81,8 @@ Meteor.methods({
       score: 0,
       publishedAt: new Date().getTime(),
       publishedBy: Meteor.user().username,
+      changes: []
+
     });
 
     answerId = Questioning.addAnswer(answer);
@@ -193,39 +197,204 @@ Meteor.methods({
   },
 
   decQuestionScore: function(id) {
-    if (! Meteor.userId()) {
+    q = Questions.findOne(id);
+
+    if (! Meteor.userId() || Meteor.userId() == q.owner ) {
       throw new Meteor.Error(401, "You are not authorized!");
     }
 
-    Questions.update( { _id: id }, {$inc: { score: -1 }} );
+    q.changes.forEach(function (change) {
+      if (change.user == Meteor.userId()) {
+        logger.debug('User ' + Meteor.userId() + ' already vote this item.');
+        throw new Meteor.Error(401, "You can vote only once!");
+      }
+    })
+
+    logger.debug('User ' + Meteor.userId() + ' vote this item.')
+
+    Questions.update( { _id: id }, {$push: {changes: {user: Meteor.userId(), date: new Date().getTime(), action: "Vote minus"}},
+                                    $inc: { score: -1 }} );
     logger.debug("Question " + id + " has decrasing score.")
+
+    _.intersection(q.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+      var behaviour = {
+        user: q.owner,
+        owner: q.owner,
+        argument: argument,
+        question: id,
+        action: 'gM'
+      }
+
+      Questioning.updateOwnerIgnorance(behaviour);
+      Questioning.updateQuestionMap(id);
+
+      var behaviour = {
+        user: Meteor.userId(),
+        owner: q.owner,
+        argument: argument,
+        question: id,
+        action: 'pM'
+      }
+
+      Questioning.updatePartecipantIgnorance(behaviour);
+      Questioning.updateQuestionMap(id);
+
+    });
   },
 
   incQuestionScore: function(id) {
-    if (! Meteor.userId()) {
+    q = Questions.findOne(id);
+
+    if (! Meteor.userId() || Meteor.userId() == q.owner ) {
       throw new Meteor.Error(401, "You are not authorized!");
     }
 
-    Questions.update( { _id: id }, {$inc: { score: 1 }} );
+    q.changes.forEach(function (change) {
+      if (change.user == Meteor.userId()) {
+        logger.debug('User ' + Meteor.userId() + ' already vote this item.');
+        throw new Meteor.Error(401, "You can vote only once!");
+      }
+    })
+
+    logger.debug('User ' + Meteor.userId() + ' vote this item.')
+
+    Questions.update( { _id: id }, {$push: {changes: {user: Meteor.userId(), date: new Date().getTime(), action: "Vote plus"}},
+                                    $inc: { score: 1 }} );
     logger.debug("Question " + id + " has increasing score.")
+
+    _.intersection(q.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+      var behaviour = {
+        user: q.owner,
+        owner: q.owner,
+        argument: argument,
+        question: id,
+        action: 'gP'
+      }
+
+      Questioning.updateOwnerIgnorance(behaviour);
+      Questioning.updateQuestionMap(id);
+
+      var behaviour = {
+        user: Meteor.userId(),
+        owner: q.owner,
+        argument: argument,
+        question: id,
+        action: 'pP'
+      }
+
+      Questioning.updatePartecipantIgnorance(behaviour);
+      Questioning.updateQuestionMap(id);
+
+    });    
   },
 
   decAnswerScore: function(id) {
-    if (! Meteor.userId()) {
+    a = Answers.findOne(id);
+    q = Questions.findOne(a.question_id);
+
+    if (! Meteor.userId() || Meteor.userId() == a.owner ) {
       throw new Meteor.Error(401, "You are not authorized!");
     }
 
-    Answers.update( { _id: id }, {$inc: { score: -1 }} );
+    a.changes.forEach(function (change) {
+      if (change.user == Meteor.userId()) {
+        logger.debug('User ' + Meteor.userId() + ' already vote this item.');
+        throw new Meteor.Error(401, "You can vote only once!");
+      }
+    })
+
+    Answers.update( { _id: id }, {$push: {changes: {user: Meteor.userId(), date: new Date().getTime(), action: "Vote minus"}},
+                                  $inc: { score: -1 }} );
     logger.debug("Answer " + id + " has decreasing score.")
+
+    _.intersection(q.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+
+      var behaviour = {
+        user: a.owner,
+        owner: q.owner,
+        argument: argument,
+        question: a.question_id,
+        action: 'gM'
+      }
+
+      if (a.owner == q.owner) {
+        Questioning.updateOwnerIgnorance(behaviour, a.is_accepted);
+      } else {
+        Questioning.updatePartecipantIgnorance(behaviour, a.is_accepted);
+      }
+      Questioning.updateQuestionMap(a.question_id);
+
+      var behaviour = {
+        user: Meteor.userId(),
+        owner: q.owner,
+        argument: argument,
+        question: a.question_id,
+        action: 'pM'
+      }
+
+      if (q.owner == Meteor.userId()) {
+        Questioning.updateOwnerIgnorance(behaviour, a.is_accepted);  
+      } else {
+        Questioning.updatePartecipantIgnorance(behaviour, a.is_accepted);        
+      }
+      Questioning.updateQuestionMap(a.question_id);
+
+    });    
   },
 
   incAnswerScore: function(id) {
-    if (! Meteor.userId()) {
+    a = Answers.findOne(id);
+    q = Questions.findOne(a.question_id);
+
+
+    if (! Meteor.userId() || Meteor.userId() == a.owner ) {
       throw new Meteor.Error(401, "You are not authorized!");
     }
 
-    Answers.update( { _id: id }, {$inc: { score: 1 }} );
+    a.changes.forEach(function (change) {
+      if (change.user == Meteor.userId()) {
+        logger.debug('User ' + Meteor.userId() + ' already vote this item.');
+        throw new Meteor.Error(401, "You can vote only once!");
+      }
+    })
+
+    Answers.update( { _id: id }, {$push: {changes: {user: Meteor.userId(), date: new Date().getTime(), action: "Vote plus"}},
+                                  $inc: { score: 1 }} );
     logger.debug("Answer " + id + " has incrasing score.")
+
+    _.intersection(q.tags, Meteor.settings.interestingTags).forEach(function(argument) {
+
+      var behaviour = {
+        user: a.owner,
+        owner: q.owner,
+        argument: argument,
+        question: a.question_id,
+        action: 'gP'
+      }
+
+      if (a.owner == q.owner) {
+        Questioning.updateOwnerIgnorance(behaviour, a.is_accepted);
+      } else {
+        Questioning.updatePartecipantIgnorance(behaviour, a.is_accepted);
+      }
+      Questioning.updateQuestionMap(a.question_id);
+
+      var behaviour = {
+        user: Meteor.userId(),
+        owner: q.owner,
+        argument: argument,
+        question: a.question_id,
+        action: 'pP'
+      }
+
+      if (q.owner == Meteor.userId()) {
+        Questioning.updateOwnerIgnorance(behaviour, a.is_accepted);  
+      } else {
+        Questioning.updatePartecipantIgnorance(behaviour, a.is_accepted);        
+      }
+      Questioning.updateQuestionMap(a.question_id);
+
+    });        
   },
 
   updateIgnorance: function (ignoranceAttr) {

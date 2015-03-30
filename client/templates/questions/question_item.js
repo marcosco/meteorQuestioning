@@ -1,5 +1,9 @@
 Template.questionItem.helpers({
   ownPost: function() { 
+    return this.owner == Meteor.userId();
+  },
+
+  ownPostOrAdmin: function() { 
     return this.owner == Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'administrator');
   },
 

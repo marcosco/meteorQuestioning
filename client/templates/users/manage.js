@@ -69,8 +69,7 @@ Template.manageUsers.events({
     // get current value for limit, i.e. how many posts are currently displayed
     var limit = instance.limit.get();
 
-    // increase limit by 5 and update it
-    limit += 5;
+    limit += Meteor.settings.public.pageSize;
     instance.limit.set(limit);
   },
   'click .impersonate': function() {

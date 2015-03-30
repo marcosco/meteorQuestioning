@@ -85,7 +85,8 @@ Meteor.startup(function () {
           is_answered: null,
           is_closed: false,
           publishedAt: new Date().getTime(),
-          publishedBy: owner.username
+          publishedBy: owner.username,
+          changes: []
         }
 
         question_id = Questioning.addQuestion(question);
@@ -128,6 +129,7 @@ Meteor.startup(function () {
               username: owner.username,
               publishedAt: new Date().getTime(),
               publishedBy: owner.username,
+              changes: []
             };
 
             answer_id = Questioning.addAnswer(answer);

@@ -1,4 +1,12 @@
 Template.answerItem.helpers({
+  ownPost: function() { 
+    return this.owner == Meteor.userId();
+  },
+
+  ownPostOrAdmin: function() { 
+    return this.owner == Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'administrator');
+  },
+
   createdAt: function() {
     date = new Date(this.createdAt);
     return date.toString();

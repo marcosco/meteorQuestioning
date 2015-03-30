@@ -3,9 +3,41 @@
   "globalLogLevel" : "debug",
   "papertrayLogLevel" : "info",
   "public" : {
-    "pageSize": 10,
+    "pageSize": 5,
     "avoidQuestionRemove": false,
-    "avoidQuestionUpdate": false
+    "avoidQuestionUpdate": false,
+    "ignoranceMap": {
+      "uu": {
+        "label": "Unknown Unknowns",
+        "color": "#cc0000",
+        "highlight": "#ff4444"
+      },
+      "ku": {
+        "label": "Known Unknowns",
+        "color": "#ff8800",
+        "highlight": "#ffbb33"
+      },
+      "uk": {
+        "label": "Unknown Knowns",
+        "color": "#9933cc",
+        "highlight": "#aa66cc"
+      },
+      "er": {
+        "label": "Errors",
+        "color": "#000000",
+        "highlight": "#4c4c4c"
+      },
+      "de": {
+        "label": "Denials",
+        "color": "#0099cc",
+        "highlight": "#33b5e5"
+      },
+      "kk": {
+        "label": "Known Knowns",
+        "color": "#669900",
+        "highlight": "#99cc00"
+      }
+    }
   },
   "publishedByDefault" : true,
   "interestingTags": ["css", "javascript"],
@@ -13,7 +45,7 @@
     "initial" : 0,
     "newQuestion" : 1,
     "openQuestion" : 1,
-    "getMinus" : 1,
+    "getMinus" : -1,
     "putMinus" : 1,
     "getPlus" : 1,
     "putPlus" : 1,
@@ -21,6 +53,6 @@
     "acceptAnswer" : 1,
     "refuseAnswer" : 1,
     "selfAccept" : 1,
-    "getAccept" :1
+    "getAccept" : 1
   }
 }

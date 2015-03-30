@@ -58,7 +58,11 @@ Questioning = {
     });
   },
 
-  updateOwnerIgnorance : function (behaviour) {
+  updateOwnerIgnorance : function (behaviour, isAccepted) {
+    if (typeof(isAccepted)==='undefined') {
+      isAccepted = false;
+    }
+
     logger.debug("Performing ignorance update for user " + behaviour.user);
 
     var options = {
@@ -140,7 +144,11 @@ Questioning = {
 
   },
 
-  updatePartecipantIgnorance : function (behaviour) {
+  updatePartecipantIgnorance : function (behaviour, isAccepted) {
+    if (typeof(isAccepted)==='undefined') {
+      isAccepted = false;
+    }
+
     logger.debug("Performing ignorance update for user " + behaviour.user);
 
     var options = {
@@ -179,7 +187,7 @@ Questioning = {
         logger.debug('Put Minus action performed');
 
         actualIgnorance.score += Meteor.settings.score.putMinus;
-        if ((previousIgnorance == "Errors" || previousIgnorance == "Denials") && isAccepted) {
+        if ((previousIgnorance == "Known Unknowns" || previousIgnorance == "Errors" || previousIgnorance == "Denials") && isAccepted) {
           logger.debug('On accepted Answer');
           actualIgnorance.classification = "Denials";
         }
@@ -188,7 +196,7 @@ Questioning = {
         logger.debug('Put Plus action performed');
         actualIgnorance.score += Meteor.settings.score.putPlus;
 
-        if ((previousIgnorance == "Errors" || previousIgnorance == "Denials") && isAccepted) {
+        if ((previousIgnorance == "Known Unknowns" || previousIgnorance == "Errors" || previousIgnorance == "Denials") && isAccepted) {
           logger.debug('On accepted Answer');
           actualIgnorance.classification = "Known Knowns";
         }
@@ -396,7 +404,7 @@ Questioning = {
                                                     - distribution.ignoranceMap.kk.percentage;
 
       logger.debug( ' KU: ' + distribution.ignoranceMap.ku.percentage
-       + ' UK: ' + distribution.ignoranceMap.ku.percentage 
+       + ' UK: ' + distribution.ignoranceMap.uk.percentage 
        + ' ER: ' + distribution.ignoranceMap.er.percentage 
        + ' DE: ' + distribution.ignoranceMap.de.percentage
        + ' KK: ' + distribution.ignoranceMap.kk.percentage 
@@ -405,7 +413,7 @@ Questioning = {
 
     distribution.ignoranceMap.uu.absolute = uu;
     distribution.ignoranceMap.ku.absolute = ku;
-    distribution.ignoranceMap.uk.absolute = ku;    
+    distribution.ignoranceMap.uk.absolute = uk;    
     distribution.ignoranceMap.er.absolute = er;
     distribution.ignoranceMap.de.absolute = de;
     distribution.ignoranceMap.kk.absolute = kk;

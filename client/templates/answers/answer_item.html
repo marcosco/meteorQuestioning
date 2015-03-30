@@ -4,9 +4,15 @@
       <h3>{{title}}</h3>
       <p>{{{text}}}</p>
       <p><i>Authored by: {{username}} at {{createdAt}}</i></p>
-      <p>Score: <span class="glyphicon glyphicon-minus answer-minus" aria-hidden="true"></span>
+      <p>Score: 
+        {{#unless ownPost}}
+        <span class="glyphicon glyphicon-minus answer-minus" aria-hidden="true"></span>
+        {{/unless}}
         {{score}}
-        <span class="glyphicon glyphicon-plus answer-plus" aria-hidden="true"></span></p>
+        {{#unless ownPost}}
+        <span class="glyphicon glyphicon-plus answer-plus" aria-hidden="true"></span>
+        {{/unless}}
+        </p>
       <p><span class="badge answer-badge" style="background-color: {{badgeColor}}">{{isAccepted}}</span></p>
     </div>
   </div>
