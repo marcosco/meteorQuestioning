@@ -54,12 +54,20 @@ Template.answerItem.events({
   'click .answer-minus': function(e) {
     e.preventDefault();
 
-    Meteor.call("decAnswerScore", this._id);
+    Meteor.call("decAnswerScore", this._id, function(err){
+      if (err) {
+        alert(err);
+      }
+    });
   },
 
   'click .answer-plus': function(e) {
     e.preventDefault();
 
-    Meteor.call("incAnswerScore", this._id);
+    Meteor.call("incAnswerScore", this._id, function(err){
+      if (err) {
+        alert(err);
+      }
+    });
   },    
 });
