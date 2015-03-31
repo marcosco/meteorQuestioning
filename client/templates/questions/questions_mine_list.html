@@ -1,9 +1,13 @@
 <template name="questionsMineList">
   <h1>My questions</h1>
   <div class="questions">
+  {{#if questions.count }}
     {{#each questions}}
       {{> questionItem}}
     {{/each}}
+  {{else}}
+  No data to display.
+  {{/if}}    
   </div>
   {{#if isReady}}
     {{#if hasMoreQuestions}}

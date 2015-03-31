@@ -1,4 +1,4 @@
-Template.questionsMineList.created = function () {
+  Template.questionsMineList.created = function () {
 
   // 1. Initialization
 
@@ -34,7 +34,13 @@ Template.questionsMineList.created = function () {
   instance.questions = function() { 
     query = Session.get('srch-term');
 
-    var qlist = Answers.find({owner: Meteor.userId()});
+    var qlist = Answers.find({
+      $or: [
+      {owner: Meteor.userId()},
+      {changes: {$elemMatch:
+        { user: Meteor.userId() }
+      }}
+      ]});
     itemList = qlist.map(function (qlist) {
       return qlist.question_id;
     });
@@ -70,7 +76,10 @@ Template.questionsMineList.created = function () {
     return Questions.find({ 
               $or: [
                 { owner: Meteor.userId() },
-                { _id: {$in: itemList} } 
+                { _id: {$in: itemList} },
+                { changes: {$elemMatch:
+                  { user: Meteor.userId() }
+                }}
               ]
               }, 
               {sort: {createdAt: -1}, limit: instance.loaded.get()});

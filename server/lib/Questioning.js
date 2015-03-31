@@ -63,7 +63,7 @@ Questioning = {
       isAccepted = false;
     }
 
-    logger.debug("Performing ignorance update for user " + behaviour.user);
+    logger.debug("Performing ignorance update for owner user " + behaviour.user);
 
     var options = {
       user: behaviour.user,
@@ -149,7 +149,7 @@ Questioning = {
       isAccepted = false;
     }
 
-    logger.debug("Performing ignorance update for user " + behaviour.user);
+    logger.debug("Performing ignorance update for partecipant user " + behaviour.user);
 
     var options = {
       user: behaviour.user,
