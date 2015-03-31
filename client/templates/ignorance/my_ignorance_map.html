@@ -15,7 +15,7 @@
   <div class="chart">
     <canvas id="{{chart}}" style="width:100%; height:100%"></canvas>
   </div>  
-  <h3>Known Unknowns</h3>
+  <h3>{{ignoranceLabel 'ku'}}</h3>
   {{#if questionsKU.count}}
   <table class="table table-hover">
     <thead>
@@ -35,7 +35,7 @@
   No data to display.
   {{/if}}
 
-  <h3>Unknown Unknowns</h3>
+  <h3>{{ignoranceLabel 'uu'}}</h3>
   {{#if questionsUU.count}}
   <table class="table table-hover">
     <thead>
@@ -55,7 +55,7 @@
   No data to display.
   {{/if}}
 
-  <h3>Errors</h3>
+  <h3>{{ignoranceLabel 'er'}}</h3>
   {{#if questionsER.count}}
   <table class="table table-hover">
     <thead>
@@ -75,7 +75,7 @@
   No data to display.
   {{/if}}
 
-  <h3>Unknown Knowns</h3>
+  <h3>{{ignoranceLabel 'uk'}}</h3>
   {{#if questionsUK.count}}  
   <table class="table table-hover">
     <thead>
@@ -95,7 +95,7 @@
   No data to display.
   {{/if}}
 
-  <h3>Known Knowns</h3>
+  <h3>{{ignoranceLabel 'kk'}}</h3>
   {{#if questionsKK.count}}    
   <table class="table table-hover">
     <thead>
@@ -115,7 +115,7 @@
   No data to display.
   {{/if}}
 
-  <h3>Denials</h3>
+  <h3>{{ignoranceLabel 'de'}}</h3>
   {{#if questionsDE.count}}   
   <table class="table table-hover">
     <thead>

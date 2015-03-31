@@ -12,12 +12,12 @@
   <h2>{{this.argument}}</h2>
   <div class="stats">
     <ul>
-      <li>Unknown Unknowns: {{this.distribution.uu.absolute}}</li>
-      <li>Known Unknowns: {{this.distribution.ku.absolute}}</li>
-      <li>Errors: {{this.distribution.er.absolute}}</li>
-      <li>Denials: {{this.distribution.de.absolute}}</li>
-      <li>Known Knowns: {{this.distribution.kk.absolute}}</li>
-      <li>Unknowns Knowns: {{this.distribution.uk.absolute}}</li>      
+      <li>{{ignoranceLabel 'uu'}}: {{this.distribution.uu.absolute}}</li>
+      <li>{{ignoranceLabel 'ku'}}: {{this.distribution.ku.absolute}}</li>
+      <li>{{ignoranceLabel 'er'}}: {{this.distribution.er.absolute}}</li>
+      <li>{{ignoranceLabel 'de'}}: {{this.distribution.de.absolute}}</li>
+      <li>{{ignoranceLabel 'kk'}}: {{this.distribution.kk.absolute}}</li>
+      <li>{{ignoranceLabel 'uk'}}: {{this.distribution.uk.absolute}}</li>      
     </ul>
   </div>
   <div class="chart">

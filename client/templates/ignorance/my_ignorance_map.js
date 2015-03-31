@@ -81,7 +81,7 @@ Template.myIgnoranceRow.rendered = function () {
 Template.myIgnoranceMap.helpers({
   interestingTags: function () {
     return Arguments.find();
-  },
+  }
 });
 
 Template.myIgnoranceRow.helpers({
@@ -161,5 +161,8 @@ Template.myIgnoranceRow.helpers({
     });
 
     return Questions.find({_id: {$in: itemList}});
-  },    
+  },  
+  ignoranceClasses: function () {
+    return $.map(Meteor.settings.public.ignoranceMap, function(value){return value});
+  }  
 });

@@ -16,3 +16,7 @@ UI.registerHelper("avoidQuestionUpdate", function () {
 UI.registerHelper("avoidQuestionRemove", function () {
     return Meteor.settings.public.avoidQuestionRemove;
 });
+
+UI.registerHelper("ignoranceLabel", function (ignorance) {
+    return Meteor.settings.public.ignoranceMap[ignorance].label;
+});
