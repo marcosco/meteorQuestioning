@@ -1,3 +1,55 @@
+function setGoal(data) {
+  console.log(data);
+  goal =    ((data.score / 100) * data.uu.percentage) * Meteor.settings.public.goal.modifiers.uu
+          + ((data.score / 100) * data.ku.percentage) * Meteor.settings.public.goal.modifiers.ku
+          + ((data.score / 100) * data.uk.percentage) * Meteor.settings.public.goal.modifiers.uk
+          + ((data.score / 100) * data.de.percentage) * Meteor.settings.public.goal.modifiers.de
+          + ((data.score / 100) * data.er.percentage) * Meteor.settings.public.goal.modifiers.er
+          + ((data.score / 100) * data.kk.percentage) * Meteor.settings.public.goal.modifiers.kk
+
+  goalAbs = Math.round(goal)
+  console.log('abs' + goalAbs);
+
+  goalPercentage = Math.round(goalAbs * 100 / Meteor.settings.public.goal.score);
+  console.log('per' + goalPercentage);
+
+  element = '#' + data.argument + '_Goal';
+
+  pbarDanger = '#progress-danger-' + data.argument;
+  pbarWarning = '#progress-warning-' + data.argument;
+  pbarOk = '#progress-ok-' + data.argument;
+
+  $(element).html('').append( goalPercentage + '%');
+
+  switch(true) {
+    case goalPercentage <= 10:
+      console.log('min');
+      bar = goalPercentage;
+      $(pbarDanger).attr("aria-valuenow", bar).css('width', bar + '%');
+      $(pbarWarning).attr("aria-valuenow", "0").css('width', '0%');
+      $(pbarOk).attr("aria-valuenow", "0").css('width', '0%');
+      break;
+    case goalPercentage > 10 && goalPercentage <= 30:
+      console.log('med');
+      bar = goalPercentage - 10;
+      $(pbarDanger).attr("aria-valuenow", "10").css('width', '10%');;
+      $(pbarWarning).attr("aria-valuenow", bar).css('width', bar + '%');
+      $(pbarOk).attr("aria-valuenow", "0").css('width', '0%');;
+      break;
+    case goalPercentage > 30:
+      console.log('max');
+      bar = goalPercentage - 30;
+      $(pbarDanger).attr("aria-valuenow", "10").css('width', '10%');;
+      $(pbarWarning).attr("aria-valuenow", "20").css('width', '20%');;
+      $(pbarOk).attr("aria-valuenow", bar).css('width', bar + '%');
+      break;
+  }
+
+}
+function drawDonuts(data) {
+
+}
+
 function drawChart(item) {
   canvas = '#' + item.argument +'_Chart'
 
@@ -53,27 +105,34 @@ Template.myIgnoranceRow.rendered = function () {
       argument: result.argument,
       distribution: {
         uu: {
-          absolute: result.uu,
+          absolute: result.uu.absolute,
+          percentage: result.uu.percentage,
         },
         ku: {
-          absolute: result.ku,
+          absolute: result.ku.absolute,
+          percentage: result.ku.percentage,
         },
         er: {
-          absolute: result.er,
+          absolute: result.er.absolute,
+          percentage: result.er.percentage,
         },
         de: {
-          absolute: result.de,
+          absolute: result.de.absolute,
+          percentage: result.de.percentage,
         },
         uk: {
-          absolute: result.uk,
+          absolute: result.uk.absolute,
+          percentage: result.uk.percentage,
         },
         kk: {
-          absolute: result.kk,
+          absolute: result.kk.absolute,
+          percentage: result.kk.percentage,
         }
       }       
     };
 
     drawChart(data);
+    setGoal(result);
   });
     //drawChart(item);
 };

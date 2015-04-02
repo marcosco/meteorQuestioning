@@ -37,6 +37,23 @@
         "color": "#669900",
         "highlight": "#99cc00"
       }
+    },
+    "goal": {
+      "modifiers": {
+        "uu": 1,
+        "ku": 1.2,
+        "kk": 2.5,
+        "uk": 1.4,
+        "er": 0.5,
+        "de": 0.1
+      },
+      "score": 150,
+      "rewards": [
+        {
+          "name": "level 1",
+          "score": "10"
+        }
+      ]
     }
   },
   "publishedByDefault" : true,

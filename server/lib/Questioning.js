@@ -423,34 +423,105 @@ Questioning = {
 
   getIgnoranceDistributionByUser : function (userId, argument) {
     if (typeof(argument)==='undefined') {
-      ignorance = {};
+      ignorance = {
+        uu: {},
+        ku: {},
+        uk: {},
+        er: {},
+        de: {},
+        kk: {},      
+      };
       Meteor.settings.interestingTags.forEach(function(argument) {
         ignorance[argument] = {};
         total = Questioning.getQuestionsCount(argument);
         ignorance[argument].total = total;
-        ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
-        ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
-        ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
-        ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
-        ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
-        ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
 
+        items = Ignorances.find({user: userId, argument: argument});
+        var score = Meteor.settings.score.initial;
+        items.forEach(function (item) {
+          score += item.score;
+        });
+
+        ignorance[argument].score = score;
+
+        ignorance[argument].uu.absolute = total - Ignorances.find({user: userId, argument: argument}).count();
+        ignorance[argument].ku.absolute = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
+        ignorance[argument].uk.absolute = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
+        ignorance[argument].er.absolute = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
+        ignorance[argument].de.absolute = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
+        ignorance[argument].kk.absolute = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+
+        if (total != 0) {
+          ignorance[argument].ku.percentage = Math.round((100 / total) * ignorance[argument].ku.absolute);
+          ignorance[argument].uk.percentage = Math.round((100 / total) * ignorance[argument].uk.absolute);      
+          ignorance[argument].er.percentage = Math.round((100 / total) * ignorance[argument].er.absolute);
+          ignorance[argument].de.percentage = Math.round((100 / total) * ignorance[argument].de.absolute);
+          ignorance[argument].kk.percentage = Math.round((100 / total) * ignorance[argument].kk.absolute);
+          ignorance[argument].uu.percentage = 100 - ignorance[argument].ku.percentage
+                                                  - ignorance[argument].uk.percentage
+                                                  - ignorance[argument].er.percentage
+                                                  - ignorance[argument].de.percentage
+                                                  - ignorance[argument].kk.percentage;
+        } else {
+          ignorance[argument].ku.percentage = 0;
+          ignorance[argument].uk.percentage = 0;      
+          ignorance[argument].er.percentage = 0;
+          ignorance[argument].de.percentage = 0;
+          ignorance[argument].kk.percentage = 0;
+          ignorance[argument].uu.percentage = 0;          
+        }
       });
 
       return ignorance;    
     }
 
     ignorance = {};
-    ignorance[argument] = {};
+    ignorance[argument] = {
+      uu: {},
+      ku: {},
+      uk: {},
+      er: {},
+      de: {},
+      kk: {},      
+    };
     ignorance[argument].argument = argument;
     total = Questioning.getQuestionsCount(argument);
     ignorance[argument].total = total;
-    ignorance[argument].uu = total - Ignorances.find({user: userId, argument: argument}).count();
-    ignorance[argument].ku = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
-    ignorance[argument].uk = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
-    ignorance[argument].er = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
-    ignorance[argument].de = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
-    ignorance[argument].kk = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+
+    items = Ignorances.find({user: userId, argument: argument});
+    var score = Meteor.settings.score.initial;
+    items.forEach(function (item) {
+      score += item.score;
+    });
+
+    ignorance[argument].score = score;
+            
+    ignorance[argument].uu.absolute = total - Ignorances.find({user: userId, argument: argument}).count();
+    ignorance[argument].ku.absolute = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
+    ignorance[argument].uk.absolute = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
+    ignorance[argument].er.absolute = Ignorances.find({user: userId, argument: argument, classification : "Errors"}).count();
+    ignorance[argument].de.absolute = Ignorances.find({user: userId, argument: argument, classification : "Denials"}).count();
+    ignorance[argument].kk.absolute = Ignorances.find({user: userId, argument: argument, classification : "Known Knowns"}).count();
+
+    if (total != 0) {
+      ignorance[argument].ku.percentage = Math.round((100 / total) * ignorance[argument].ku.absolute);
+      ignorance[argument].uk.percentage = Math.round((100 / total) * ignorance[argument].uk.absolute);      
+      ignorance[argument].er.percentage = Math.round((100 / total) * ignorance[argument].er.absolute);
+      ignorance[argument].de.percentage = Math.round((100 / total) * ignorance[argument].de.absolute);
+      ignorance[argument].kk.percentage = Math.round((100 / total) * ignorance[argument].kk.absolute);
+      ignorance[argument].uu.percentage = 100 - ignorance[argument].ku.percentage
+                                              - ignorance[argument].uk.percentage
+                                              - ignorance[argument].er.percentage
+                                              - ignorance[argument].de.percentage
+                                              - ignorance[argument].kk.percentage;
+    } else {
+      ignorance[argument].ku.percentage = 0;
+      ignorance[argument].uk.percentage = 0;      
+      ignorance[argument].er.percentage = 0;
+      ignorance[argument].de.percentage = 0;
+      ignorance[argument].kk.percentage = 0;
+      ignorance[argument].uu.percentage = 0;          
+    }
 
     return ignorance[argument];    
   },

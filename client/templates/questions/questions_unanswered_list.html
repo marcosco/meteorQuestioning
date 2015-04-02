@@ -1,9 +1,13 @@
 <template name="questionsUnansweredList">
   <h1>Unanswered questions</h1>
   <div class="questions">
-    {{#each questions}}
-      {{> questionItem}}
-    {{/each}}
+    {{#if questions.count}}
+      {{#each questions}}
+        {{> questionItem}}
+      {{/each}}
+    {{else}}
+    All questions got an accepted answer.
+    {{/if}}  
   </div>
   {{#if isReady}}
     {{#if hasMoreQuestions}}

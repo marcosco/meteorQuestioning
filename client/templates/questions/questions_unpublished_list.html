@@ -1,9 +1,12 @@
 <template name="questionsUnpublishedList">
-  <h1>Unpublished questions</h1>
   <div class="questions">
-    {{#each questions}}
-      {{> questionItem}}
-    {{/each}}
+    {{#if questions.count}}
+      {{#each questions}}
+        {{> questionItem}}
+      {{/each}}
+    {{else}}
+    All questions are published.
+    {{/if}}      
   </div>
   {{#if isReady}}
     {{#if hasMoreQuestions}}
