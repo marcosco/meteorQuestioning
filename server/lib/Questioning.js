@@ -432,6 +432,7 @@ Questioning = {
         kk: {},      
       };
       Meteor.settings.interestingTags.forEach(function(argument) {
+        ignorance[argument].userId = userId;
         ignorance[argument] = {};
         total = Questioning.getQuestionsCount(argument);
         ignorance[argument].total = total;
@@ -484,6 +485,8 @@ Questioning = {
       de: {},
       kk: {},      
     };
+    ignorance[argument].userId = userId;
+
     ignorance[argument].argument = argument;
     total = Questioning.getQuestionsCount(argument);
     ignorance[argument].total = total;
@@ -495,7 +498,7 @@ Questioning = {
     });
 
     ignorance[argument].score = score;
-            
+
     ignorance[argument].uu.absolute = total - Ignorances.find({user: userId, argument: argument}).count();
     ignorance[argument].ku.absolute = Ignorances.find({user: userId, argument: argument, classification : "Known Unknowns"}).count();
     ignorance[argument].uk.absolute = Ignorances.find({user: userId, argument: argument, classification : "Unknown Knowns"}).count();      
