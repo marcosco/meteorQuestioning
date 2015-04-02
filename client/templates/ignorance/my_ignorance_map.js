@@ -1,5 +1,4 @@
 function setGoal(data) {
-  console.log(data);
   goal =    ((data.score / 100) * data.uu.percentage) * Meteor.settings.public.goal.modifiers.uu
           + ((data.score / 100) * data.ku.percentage) * Meteor.settings.public.goal.modifiers.ku
           + ((data.score / 100) * data.uk.percentage) * Meteor.settings.public.goal.modifiers.uk
@@ -8,10 +7,8 @@ function setGoal(data) {
           + ((data.score / 100) * data.kk.percentage) * Meteor.settings.public.goal.modifiers.kk
 
   goalAbs = Math.round(goal)
-  console.log('abs' + goalAbs);
 
   goalPercentage = Math.round(goalAbs * 100 / Meteor.settings.public.goal.score);
-  console.log('per' + goalPercentage);
 
   element = '#' + data.argument + '_Goal';
 
@@ -23,21 +20,18 @@ function setGoal(data) {
 
   switch(true) {
     case goalPercentage <= 10:
-      console.log('min');
       bar = goalPercentage;
       $(pbarDanger).attr("aria-valuenow", bar).css('width', bar + '%');
       $(pbarWarning).attr("aria-valuenow", "0").css('width', '0%');
       $(pbarOk).attr("aria-valuenow", "0").css('width', '0%');
       break;
     case goalPercentage > 10 && goalPercentage <= 30:
-      console.log('med');
       bar = goalPercentage - 10;
       $(pbarDanger).attr("aria-valuenow", "10").css('width', '10%');;
       $(pbarWarning).attr("aria-valuenow", bar).css('width', bar + '%');
       $(pbarOk).attr("aria-valuenow", "0").css('width', '0%');;
       break;
     case goalPercentage > 30:
-      console.log('max');
       bar = goalPercentage - 30;
       $(pbarDanger).attr("aria-valuenow", "10").css('width', '10%');;
       $(pbarWarning).attr("aria-valuenow", "20").css('width', '20%');;
@@ -46,8 +40,38 @@ function setGoal(data) {
   }
 
 }
-function drawDonuts(data) {
+function drawDonuts(item) {
+  charts = ['uu','ku','uk','er','de','kk'];
+  charts.forEach(function(ignorance){
+  canvas = '#' + ignorance + '-' + item.argument +'_Chart';
 
+  var data = [
+      {
+          value: item.distribution[ignorance].percentage,
+          color: Meteor.settings.public.ignoranceMap[ignorance].color,
+          highlight: Meteor.settings.public.ignoranceMap[ignorance].highlight,
+          label: Meteor.settings.public.ignoranceMap[ignorance].label
+      },
+      {
+          value: 100 - item.distribution[ignorance].percentage,
+          color: '#ffffff',
+          highlight: '#ffffff',
+          label: ''
+      },      
+  ]
+
+  var ctx = $(canvas).get(0).getContext("2d");
+  var myNewChart = new Chart(ctx)
+  new Chart(ctx).Doughnut(data,{
+    segmentShowStroke : true,
+   //String - The colour of each segment stroke
+    segmentStrokeColor : "#000",
+
+    //Number - The width of each segment stroke
+    segmentStrokeWidth : 1,    
+    animateScale: true
+  });
+  })
 }
 
 function drawChart(item) {
@@ -95,8 +119,8 @@ function drawChart(item) {
   var ctx = $(canvas).get(0).getContext("2d");
   var myNewChart = new Chart(ctx)
   new Chart(ctx).Pie(data,null);
-
 }
+
 Template.myIgnoranceRow.rendered = function () {
   argument = this.data.argument;
     //Get the context of the canvas element we want to select
@@ -133,6 +157,7 @@ Template.myIgnoranceRow.rendered = function () {
 
     drawChart(data);
     setGoal(result);
+    drawDonuts(data);
   });
     //drawChart(item);
 };
