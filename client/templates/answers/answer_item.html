@@ -6,11 +6,15 @@
       <p><i>Authored by: {{username}} at {{createdAt}}</i></p>
       <p>Score: 
         {{#unless ownPost}}
+        {{#if currentUser}}
         <span class="glyphicon glyphicon-minus answer-minus" aria-hidden="true"></span>
+        {{/if}}
         {{/unless}}
         {{score}}
         {{#unless ownPost}}
+        {{#if currentUser}}
         <span class="glyphicon glyphicon-plus answer-plus" aria-hidden="true"></span>
+        {{/if}}
         {{/unless}}
         </p>
       <p><span class="badge answer-badge" style="background-color: {{badgeColor}}">{{isAccepted}}</span></p>

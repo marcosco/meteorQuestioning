@@ -1,9 +1,11 @@
 <template name="questionPage">
   {{> questionItem}}
   {{#unless questionClosed}}
+  {{#if currentUser}}
   <div>
     {{> answerForm}}
   </div>
+  {{/if}}
   {{/unless}}
   <div class="replies">
     {{#each replies}}

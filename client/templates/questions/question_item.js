@@ -1,3 +1,58 @@
+function drawQuestionChart(item) {
+  canvas = '#' + item.question +'-chart'
+
+  var data = [
+      {
+          value: item.ignoranceMap.uu.absolute,
+          color: Meteor.settings.public.ignoranceMap.uu.color,
+          highlight: Meteor.settings.public.ignoranceMap.uu.highlight,
+          label: Meteor.settings.public.ignoranceMap.uu.label
+      },
+      {
+          value: item.ignoranceMap.ku.absolute,
+          color: Meteor.settings.public.ignoranceMap.ku.color,
+          highlight: Meteor.settings.public.ignoranceMap.ku.highlight,
+          label: Meteor.settings.public.ignoranceMap.ku.label
+      },
+      {
+          value: item.ignoranceMap.uk.absolute,
+          color: Meteor.settings.public.ignoranceMap.uk.color,
+          highlight: Meteor.settings.public.ignoranceMap.uk.highlight,
+          label: Meteor.settings.public.ignoranceMap.uk.label
+      },
+      {
+          value: item.ignoranceMap.er.absolute,
+          color: Meteor.settings.public.ignoranceMap.er.color,
+          highlight: Meteor.settings.public.ignoranceMap.er.highlight,
+          label: Meteor.settings.public.ignoranceMap.er.label
+      },
+      {
+          value: item.ignoranceMap.de.absolute,
+          color: Meteor.settings.public.ignoranceMap.de.color,
+          highlight: Meteor.settings.public.ignoranceMap.de.highlight,
+          label: Meteor.settings.public.ignoranceMap.de.label
+      },
+      {
+          value: item.ignoranceMap.kk.absolute,
+          color: Meteor.settings.public.ignoranceMap.kk.color,
+          highlight: Meteor.settings.public.ignoranceMap.kk.highlight,
+          label: Meteor.settings.public.ignoranceMap.kk.label
+      }      
+  ]
+
+  var ctx = $(canvas).get(0).getContext("2d");
+  var myNewChart = new Chart(ctx)
+  new Chart(ctx).Pie(data,null);
+
+}
+
+Template.questionItem.rendered = function (){
+  console.log(this.data._id);
+  Meteor.call('getIgnoranceDistributionByQuestion', this.data._id, function(error, result) {
+    drawQuestionChart(result);
+  })
+};
+
 Template.questionItem.helpers({
   ownPost: function() { 
     return this.owner == Meteor.userId();
@@ -5,6 +60,10 @@ Template.questionItem.helpers({
 
   ownPostOrAdmin: function() { 
     return this.owner == Meteor.userId() || Roles.userIsInRole(Meteor.userId(), 'administrator');
+  },
+
+  isAdmin: function() { 
+    return Roles.userIsInRole(Meteor.userId(), 'administrator');
   },
 
   isPublished: function() {

@@ -9,11 +9,15 @@
       {{/if}}
       <p>Score: 
         {{#unless ownPost}}
+        {{#if currentUser}}
         <span class="glyphicon glyphicon-minus question-minus" aria-hidden="true"></span>
+        {{/if}}
         {{/unless}}
         {{score}}
         {{#unless ownPost}}
+        {{#if currentUser}}
         <span class="glyphicon glyphicon-plus question-plus" aria-hidden="true"></span>
+        {{/if}}
         {{/unless}}
       </p>
       <p>
@@ -21,21 +25,20 @@
         <span class="badge" style="display: inline-block; background-color: #3E6D8E">{{this}}</span>
       {{/each}}
       </p>
+      {{#if currentUser}}
       <p>
         My Ignorance is: <b>{{currentIgnorance.classification}}</b>
         My Score is:  <b>{{currentIgnorance.score}}</b>
       </p>
+      {{/if}}
+      {{#if isAdmin}}
       <p>
-        Question's Ignorance Map Distribution:
-        <ul>
-          <li>Known Unknowns: {{ignoranceMap.ku.absolute}} {{ignoranceMap.ku.percentage}} %</li>
-          <li>Unknown Unknowns: {{ignoranceMap.uu.absolute}} {{ignoranceMap.uu.percentage}} %</li>
-          <li>Errors: {{ignoranceMap.er.absolute}} {{ignoranceMap.er.percentage}} %</li>
-          <li>Unknown Knowns: {{ignoranceMap.uk.absolute}} {{ignoranceMap.uk.percentage}} %</li>
-          <li>Denials: {{ignoranceMap.de.absolute}} {{ignoranceMap.de.percentage}} %</li>        
-          <li>Known Knowns: {{ignoranceMap.kk.absolute}} {{ignoranceMap.kk.percentage}} %</li>                     
-        </ul>
+        <label>Question's Ignorance Map Distribution</label>
+        <div class="chart">
+          <canvas id="{{_id}}-chart" style="width:100%; height:100%"></canvas>
+        </div>        
       </p>
+      {{/if}}
     </div>
     {{#unless avoidQuestionUpdate }}
     {{#if ownPostOrAdmin}}<a class="btn btn-primary" href="{{pathFor 'questionEdit'}}">Edit</a>{{/if}}
