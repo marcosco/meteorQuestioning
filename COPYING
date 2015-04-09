@@ -1,7 +1,9 @@
 /*
-Copyright (c) 2015, Marco Scordino
+Questioning is a kind of BB system completely written using MeteorJS that
+implements Ann Kerwin's Ignorance Map and a rewarding system to involve users.
+Copyright (c) 2015, Author: Marco Scordino, Advisor: Paolo Ceravolo http://www.di.unimi.it/ceravolo/
 
-This file is part of questioning.
+This file is part of Questioning.
 
 Questioning is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,5 +16,5 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Nome-Programma.  If not, see <http://www.gnu.org/licenses/>.
+along with Questioning.  If not, see <http://www.gnu.org/licenses/>.
 */
